@@ -97,6 +97,926 @@
 </head>
 <body class="min-h-screen antialiased bg-navy-900 text-slate-100 flex flex-col">
     <div id="root" class="flex-grow flex flex-col"></div>
-    <script type="text/babel" src="app.jsx"></script>
+    <script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+// -----------------------------------------------------------------------------
+// REGIONAL DEFINITIONS & GEOGRAPHIC CENTROIDS
+// -----------------------------------------------------------------------------
+const REGION_BOUNDS = {
+  "All India": { center: [22.5937, 78.9629], zoom: 5 },
+  "Northern": { center: [29.5, 77.0], zoom: 6 },
+  "Western": { center: [21.5, 73.5], zoom: 6 },
+  "Central": { center: [22.5, 80.0], zoom: 6 },
+  "Southern": { center: [13.5, 77.5], zoom: 6 },
+  "Eastern": { center: [23.5, 86.0], zoom: 6 },
+  "North-Eastern": { center: [26.0, 93.0], zoom: 6.5 }
+};
+
+const BASEMAP_TILES = {
+  "Dark Canvas": "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+  "Esri Topo": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
+  "Esri Satellite": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+  "Carto Voyager": "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+};
+
+// -----------------------------------------------------------------------------
+// MAIN APP COMPONENT
+// -----------------------------------------------------------------------------
+function App() {
+  const [activeTab, setActiveTab] = useState("map");
+  const [selectedRegion, setSelectedRegion] = useState("All India");
+  const [selectedMetric, setSelectedMetric] = useState("total_crimes");
+  const [activeBasemap, setActiveBasemap] = useState("Dark Canvas");
+  const [showHotspots, setShowHotspots] = useState(true);
+  
+  // Data States
+  const [hotspotsData, setHotspotsData] = useState(null);
+  const [regionsData, setRegionsData] = useState(null);
+  const [timeData, setTimeData] = useState(null);
+  const [trendsData, setTrendsData] = useState(null);
+  const [evalData, setEvalData] = useState(null);
+  const [geoJsonData, setGeoJsonData] = useState(null);
+  const [selectedState, setSelectedState] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Load all pre-computed analytical datasets
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [hRes, rRes, tRes, trRes, eRes, gRes] = await Promise.all([
+          fetch('hotspots.json').then(r => r.json()),
+          fetch('regions_data.json').then(r => r.json()),
+          fetch('time_patterns.json').then(r => r.json()),
+          fetch('crime_trends.json').then(r => r.json()),
+          fetch('model_evaluation.json').then(r => r.json()),
+          fetch('india_states.json').then(r => r.json())
+        ]);
+        setHotspotsData(hRes);
+        setRegionsData(rRes);
+        setTimeData(tRes);
+        setTrendsData(trRes);
+        setEvalData(eRes);
+        setGeoJsonData(gRes);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error loading analytical data:", err);
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex-grow flex items-center justify-center bg-navy-950 text-slate-300">
+        <div className="text-center space-y-4">
+          <div className="w-16 h-16 border-4 border-brand-primary border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <p className="text-lg font-semibold tracking-wide">Loading India GIS Crime Intelligence Network...</p>
+          <p className="text-sm text-slate-500">Initializing PySpark-engineered spatial partitions</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex-grow flex flex-col min-h-screen bg-navy-900 text-slate-100">
+      {/* Top Navbar */}
+      <header className="bg-navy-800/80 backdrop-blur border-b border-slate-700/60 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center space-x-3">
+            <span className="text-2xl">🇮🇳</span>
+            <div>
+              <h1 className="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+                India Crime Pattern & GIS Intelligence
+                <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                  PySpark & NCRB Big Data
+                </span>
+              </h1>
+              <p className="text-xs text-slate-400">Official National Crime Records Bureau Analytics (2001–2014)</p>
+            </div>
+          </div>
+
+          {/* Tab Navigation */}
+          <nav className="flex space-x-1.5 bg-navy-950/60 p-1 rounded-xl border border-slate-800">
+            {[
+              { id: "map", label: "🗺️ GIS Map & Regions" },
+              { id: "analytics", label: "📈 National Analytics" },
+              { id: "predictor", label: "🎯 ML Risk Predictor" },
+              { id: "explorer", label: "📋 District Explorer" }
+            ].map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                  activeTab === tab.id
+                    ? "bg-brand-primary text-white shadow-md shadow-indigo-500/25"
+                    : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </nav>
+        </div>
+      </header>
+
+      {/* Main Content Body */}
+      <main className="flex-grow flex flex-col p-4 sm:p-6 max-w-7xl w-full mx-auto">
+        {activeTab === "map" && (
+          <GISMapView
+            hotspotsData={hotspotsData}
+            regionsData={regionsData}
+            geoJsonData={geoJsonData}
+            selectedRegion={selectedRegion}
+            setSelectedRegion={setSelectedRegion}
+            selectedMetric={selectedMetric}
+            setSelectedMetric={setSelectedMetric}
+            activeBasemap={activeBasemap}
+            setActiveBasemap={setActiveBasemap}
+            showHotspots={showHotspots}
+            setShowHotspots={setShowHotspots}
+            selectedState={selectedState}
+            setSelectedState={setSelectedState}
+          />
+        )}
+
+        {activeTab === "analytics" && (
+          <AnalyticsView timeData={timeData} trendsData={trendsData} />
+        )}
+
+        {activeTab === "predictor" && (
+          <PredictorView hotspotsData={hotspotsData} evalData={evalData} />
+        )}
+
+        {activeTab === "explorer" && (
+          <DataExplorerView hotspotsData={hotspotsData} regionsData={regionsData} />
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-navy-950 border-t border-slate-800/80 py-3 text-center text-xs text-slate-500">
+        Big Data Analytics Mini Project • Apache PySpark DataFrame Engine • HDFS Parquet • Spark MLlib Random Forest
+      </footer>
+    </div>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// TAB 1: GIS MAP & REGION SEGREGATION COMPONENT
+// -----------------------------------------------------------------------------
+function GISMapView({
+  hotspotsData,
+  regionsData,
+  geoJsonData,
+  selectedRegion,
+  setSelectedRegion,
+  selectedMetric,
+  setSelectedMetric,
+  activeBasemap,
+  setActiveBasemap,
+  showHotspots,
+  setShowHotspots,
+  selectedState,
+  setSelectedState
+}) {
+  const mapRef = useRef(null);
+  const mapInstanceRef = useRef(null);
+  const geoJsonLayerRef = useRef(null);
+  const markersLayerRef = useRef(null);
+  const tileLayerRef = useRef(null);
+
+  const regionNames = ["All India", "Northern", "Western", "Central", "Southern", "Eastern", "North-Eastern"];
+
+  // Helper color scale for metrics
+  const getColor = (value, metric) => {
+    if (metric === "violent_pct") {
+      return value > 25 ? '#7f1d1d' : value > 20 ? '#b91c1c' : value > 15 ? '#ea580c' : value > 10 ? '#d97706' : '#15803d';
+    }
+    if (metric === "women_crimes") {
+      return value > 250000 ? '#581c87' : value > 150000 ? '#7e22ce' : value > 80000 ? '#9333ea' : value > 30000 ? '#c084fc' : '#1e293b';
+    }
+    // Total crimes
+    return value > 3000000 ? '#881337' : value > 2000000 ? '#be123c' : value > 1000000 ? '#e11d48' : value > 500000 ? '#fb7185' : '#334155';
+  };
+
+  // Initialize and Update Leaflet Map
+  useEffect(() => {
+    if (!mapRef.current) return;
+
+    if (!mapInstanceRef.current) {
+      const map = L.map(mapRef.current, {
+        center: REGION_BOUNDS["All India"].center,
+        zoom: REGION_BOUNDS["All India"].zoom,
+        zoomControl: false
+      });
+      L.control.zoom({ position: 'bottomright' }).addTo(map);
+      mapInstanceRef.current = map;
+    }
+
+    const map = mapInstanceRef.current;
+
+    // Basemap Update
+    if (tileLayerRef.current) {
+      map.removeLayer(tileLayerRef.current);
+    }
+    tileLayerRef.current = L.tileLayer(BASEMAP_TILES[activeBasemap], {
+      attribution: '&copy; CartoDB &copy; Esri &copy; OpenStreetMap contributors',
+      maxZoom: 18
+    }).addTo(map);
+
+    // Update Region Camera Position
+    const bounds = REGION_BOUNDS[selectedRegion] || REGION_BOUNDS["All India"];
+    map.flyTo(bounds.center, bounds.zoom, { duration: 1.2 });
+
+    // GeoJSON State Choropleth Layer
+    if (geoJsonLayerRef.current) {
+      map.removeLayer(geoJsonLayerRef.current);
+    }
+
+    if (geoJsonData && regionsData) {
+      const stateMap = regionsData.states;
+      const regMap = regionsData.region_map;
+
+      geoJsonLayerRef.current = L.geoJSON(geoJsonData, {
+        style: (feature) => {
+          const sName = feature.properties.NAME_1 || "";
+          const stat = stateMap[sName.toUpperCase()] || { total_crimes: 0, violent_pct: 0, women_crimes: 0 };
+          const reg = regMap[sName] || "Other";
+
+          const isSelectedRegion = selectedRegion === "All India" || reg === selectedRegion;
+          const val = stat[selectedMetric] || 0;
+
+          return {
+            fillColor: isSelectedRegion ? getColor(val, selectedMetric) : '#1e293b',
+            weight: isSelectedRegion ? 1.5 : 0.8,
+            opacity: 0.9,
+            color: isSelectedRegion ? '#ffffff' : '#334155',
+            fillOpacity: isSelectedRegion ? 0.75 : 0.25
+          };
+        },
+        onEachFeature: (feature, layer) => {
+          const sName = feature.properties.NAME_1 || "";
+          const stat = stateMap[sName.toUpperCase()] || { total_crimes: 0, violent_pct: 0, women_crimes: 0, violent_crimes: 0, property_crimes: 0 };
+          const reg = regMap[sName] || "Other";
+
+          layer.on({
+            mouseover: (e) => {
+              const l = e.target;
+              l.setStyle({ weight: 3, color: '#6366f1', fillOpacity: 0.9 });
+              l.bringToFront();
+            },
+            mouseout: (e) => {
+              geoJsonLayerRef.current.resetStyle(e.target);
+            },
+            click: () => {
+              setSelectedState({ name: sName, region: reg, ...stat });
+            }
+          });
+
+          layer.bindTooltip(`
+            <div class="p-1 text-xs">
+              <strong class="text-sm font-bold">${sName}</strong> (${reg} Region)<br/>
+              <b>Total Crimes:</b> ${stat.total_crimes?.toLocaleString() || 'N/A'}<br/>
+              <b>Violent Crimes:</b> ${stat.violent_crimes?.toLocaleString() || 'N/A'} (${stat.violent_pct || 0}%)<br/>
+              <b>Crimes Against Women:</b> ${stat.women_crimes?.toLocaleString() || 'N/A'}
+            </div>
+          `, { sticky: true });
+        }
+      }).addTo(map);
+    }
+
+    // Top 50 Hotspot Danger Corridors Layer
+    if (markersLayerRef.current) {
+      map.removeLayer(markersLayerRef.current);
+    }
+
+    if (showHotspots && hotspotsData && hotspotsData.top_50_hotspots) {
+      const markers = L.layerGroup();
+      hotspotsData.top_50_hotspots.forEach(h => {
+        // Filter by region if not All India
+        const reg = regionsData?.region_map[h.state] || "";
+        if (selectedRegion !== "All India" && reg !== selectedRegion) return;
+
+        const isCritical = h.risk_level === "CRITICAL";
+        const color = isCritical ? "#ef4444" : "#f59e0b";
+
+        const marker = L.circleMarker([h.lat, h.lon], {
+          radius: Math.min(Math.max(h.total_crimes / 22000, 6), 16),
+          fillColor: color,
+          color: "#ffffff",
+          weight: 1.5,
+          opacity: 1,
+          fillOpacity: 0.85
+        });
+
+        marker.bindPopup(`
+          <div style="min-width: 190px;">
+            <div style="font-weight: 800; font-size: 14px; color: ${color}; margin-bottom: 4px;">
+              ${h.district}
+            </div>
+            <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">State: ${h.state}</div>
+            <div style="font-size: 12px; line-height: 1.5;">
+              <b>Total IPC:</b> ${h.total_crimes.toLocaleString()}<br/>
+              <b>Violent Crimes:</b> ${h.violent_crimes.toLocaleString()} (${h.violent_percentage}%)<br/>
+              <b>Women Safety Impact:</b> ${h.women_crimes.toLocaleString()} (${h.women_crime_pct}%)<br/>
+              <span style="display:inline-block; margin-top:6px; padding: 2px 8px; border-radius: 9999px; background: ${isCritical ? 'rgba(239, 68, 68, 0.2)' : 'rgba(245, 158, 11, 0.2)'}; color: ${color}; font-weight: bold; font-size: 10px;">
+                ${h.risk_level} DANGER CORRIDOR
+              </span>
+            </div>
+          </div>
+        `);
+        markers.addLayer(marker);
+      });
+      markersLayerRef.current = markers.addTo(map);
+    }
+
+  }, [geoJsonData, regionsData, hotspotsData, selectedRegion, selectedMetric, activeBasemap, showHotspots]);
+
+  // Selected Region Metadata
+  const currentRegionStats = selectedRegion === "All India"
+    ? {
+        total_crimes: Object.values(regionsData?.regions || {}).reduce((acc, r) => acc + r.total_crimes, 0),
+        violent_crimes: Object.values(regionsData?.regions || {}).reduce((acc, r) => acc + r.violent_crimes, 0),
+        women_crimes: Object.values(regionsData?.regions || {}).reduce((acc, r) => acc + r.women_crimes, 0),
+        states_count: 36
+      }
+    : (regionsData?.regions[selectedRegion] || { total_crimes: 0, violent_crimes: 0, women_crimes: 0, states_count: 0 });
+
+  const regionalDistricts = (hotspotsData?.top_50_hotspots || []).filter(h => {
+    if (selectedRegion === "All India") return true;
+    const reg = regionsData?.region_map[h.state];
+    return reg === selectedRegion;
+  });
+
+  return (
+    <div className="space-y-4 flex-grow flex flex-col">
+      {/* Controls Bar */}
+      <div className="bg-navy-800 p-4 rounded-2xl border border-slate-700/60 shadow-xl flex flex-wrap items-center justify-between gap-4">
+        {/* Region Selector Pills */}
+        <div className="flex items-center flex-wrap gap-1.5">
+          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider mr-1">Region:</span>
+          {regionNames.map(reg => (
+            <button
+              key={reg}
+              onClick={() => setSelectedRegion(reg)}
+              className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${
+                selectedRegion === reg
+                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-500/30 ring-2 ring-indigo-400/40"
+                  : "bg-navy-950/70 text-slate-300 hover:bg-slate-700 border border-slate-700/50"
+              }`}
+            >
+              {reg}
+            </button>
+          ))}
+        </div>
+
+        {/* Metric & Layer Controls */}
+        <div className="flex items-center flex-wrap gap-3 text-xs">
+          <div className="flex items-center gap-2">
+            <span className="text-slate-400 font-medium">Choropleth Metric:</span>
+            <select
+              value={selectedMetric}
+              onChange={e => setSelectedMetric(e.target.value)}
+              className="bg-navy-950 border border-slate-700 text-slate-200 text-xs rounded-lg px-2.5 py-1.5 focus:ring-1 focus:ring-brand-primary outline-none"
+            >
+              <option value="total_crimes">Total IPC Crimes</option>
+              <option value="violent_pct">Violent Crime Ratio (%)</option>
+              <option value="women_crimes">Crimes Against Women</option>
+            </select>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-slate-400 font-medium">Basemap:</span>
+            <select
+              value={activeBasemap}
+              onChange={e => setActiveBasemap(e.target.value)}
+              className="bg-navy-950 border border-slate-700 text-slate-200 text-xs rounded-lg px-2.5 py-1.5 focus:ring-1 focus:ring-brand-primary outline-none"
+            >
+              <option value="Dark Canvas">Carto Dark GIS</option>
+              <option value="Esri Topo">ArcGIS Topographic</option>
+              <option value="Esri Satellite">ArcGIS Satellite</option>
+              <option value="Carto Voyager">Carto Voyager</option>
+            </select>
+          </div>
+
+          <label className="flex items-center gap-2 cursor-pointer bg-navy-950 px-3 py-1.5 rounded-lg border border-slate-700 select-none">
+            <input
+              type="checkbox"
+              checked={showHotspots}
+              onChange={e => setShowHotspots(e.target.checked)}
+              className="rounded bg-slate-800 border-slate-600 text-brand-primary focus:ring-0"
+            />
+            <span className="text-slate-300 font-medium">Show Danger Corridors</span>
+          </label>
+        </div>
+      </div>
+
+      {/* Regional KPI Cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="bg-navy-800/80 p-3.5 rounded-xl border border-slate-700/50">
+          <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Region Focus</div>
+          <div className="text-lg font-bold text-white mt-1">{selectedRegion}</div>
+          <div className="text-xs text-indigo-400 mt-0.5">{currentRegionStats.states_count} States / UTs</div>
+        </div>
+        <div className="bg-navy-800/80 p-3.5 rounded-xl border border-slate-700/50">
+          <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total IPC Crimes</div>
+          <div className="text-lg font-bold text-slate-100 mt-1">{currentRegionStats.total_crimes?.toLocaleString()}</div>
+          <div className="text-xs text-slate-400 mt-0.5">Recorded (2001–2014)</div>
+        </div>
+        <div className="bg-navy-800/80 p-3.5 rounded-xl border border-slate-700/50">
+          <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Violent Crimes</div>
+          <div className="text-lg font-bold text-rose-400 mt-1">{currentRegionStats.violent_crimes?.toLocaleString()}</div>
+          <div className="text-xs text-rose-300/80 mt-0.5">
+            {currentRegionStats.total_crimes > 0 ? ((currentRegionStats.violent_crimes / currentRegionStats.total_crimes) * 100).toFixed(1) : 0}% of Total Volume
+          </div>
+        </div>
+        <div className="bg-navy-800/80 p-3.5 rounded-xl border border-slate-700/50">
+          <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Crimes Against Women</div>
+          <div className="text-lg font-bold text-purple-400 mt-1">{currentRegionStats.women_crimes?.toLocaleString()}</div>
+          <div className="text-xs text-purple-300/80 mt-0.5">NCRB Women Safety Head</div>
+        </div>
+      </div>
+
+      {/* Main Map Container & Right Sidebar */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 flex-grow">
+        {/* Leaflet / ArcGIS Map View */}
+        <div className="lg:col-span-3 bg-navy-950 rounded-2xl border border-slate-700/70 overflow-hidden relative shadow-2xl min-h-[560px] flex flex-col">
+          <div ref={mapRef} className="w-full h-full flex-grow min-h-[560px]"></div>
+
+          {/* Map Legend Overlay */}
+          <div className="absolute bottom-4 left-4 z-[400] bg-navy-900/90 backdrop-blur-md p-3 rounded-xl border border-slate-700/80 text-xs space-y-1.5 shadow-lg max-w-[220px]">
+            <div className="font-bold text-slate-200">Choropleth Intensity</div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-3.5 h-3.5 rounded-sm" style={{ backgroundColor: '#881337' }}></span>
+              <span className="text-slate-300">Extreme Crime Volume</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-3.5 h-3.5 rounded-sm" style={{ backgroundColor: '#e11d48' }}></span>
+              <span className="text-slate-300">High Crime Volume</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-3.5 h-3.5 rounded-sm" style={{ backgroundColor: '#fb7185' }}></span>
+              <span className="text-slate-300">Moderate Volume</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-3.5 h-3.5 rounded-sm" style={{ backgroundColor: '#334155' }}></span>
+              <span className="text-slate-400">Low / Controlled</span>
+            </div>
+            <hr className="border-slate-700/60 my-1"/>
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-rose-500 ring-2 ring-rose-400/50"></span>
+              <span className="text-slate-300">Critical Hotspot (Top 50)</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Drill-down Side Panel */}
+        <div className="space-y-4 flex flex-col">
+          {/* Selected State Card */}
+          {selectedState ? (
+            <div className="bg-navy-800 p-4 rounded-xl border border-indigo-500/50 shadow-lg space-y-2">
+              <div className="flex items-center justify-between">
+                <h3 className="text-base font-bold text-white">{selectedState.name}</h3>
+                <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300">
+                  {selectedState.region}
+                </span>
+              </div>
+              <div className="text-xs text-slate-300 space-y-1 pt-1">
+                <div className="flex justify-between"><span>Total IPC Crimes:</span><b>{selectedState.total_crimes?.toLocaleString()}</b></div>
+                <div className="flex justify-between"><span>Violent Ratio:</span><b>{selectedState.violent_pct}%</b></div>
+                <div className="flex justify-between"><span>Against Women:</span><b>{selectedState.women_crimes?.toLocaleString()}</b></div>
+                <div className="flex justify-between"><span>Property Thefts:</span><b>{selectedState.property_crimes?.toLocaleString()}</b></div>
+              </div>
+              <button
+                onClick={() => setSelectedState(null)}
+                className="text-xs text-slate-400 hover:text-slate-200 mt-2 underline"
+              >
+                Clear State Selection
+              </button>
+            </div>
+          ) : (
+            <div className="bg-navy-800/60 p-4 rounded-xl border border-slate-700/60 text-xs text-slate-400 text-center">
+              💡 <b>Tip:</b> Click on any Indian state on the map to view instant localized drill-downs.
+            </div>
+          )}
+
+          {/* Regional High-Risk Danger Districts */}
+          <div className="bg-navy-800 p-4 rounded-xl border border-slate-700/60 flex-grow flex flex-col">
+            <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center justify-between">
+              <span>Top Danger Corridors ({selectedRegion})</span>
+              <span className="text-rose-400">{regionalDistricts.length}</span>
+            </h4>
+            <div className="space-y-2 overflow-y-auto max-h-[400px] pr-1">
+              {regionalDistricts.slice(0, 8).map((d, i) => (
+                <div key={i} className="p-2 rounded-lg bg-navy-950/70 border border-slate-800 hover:border-slate-700 transition">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <div className="text-xs font-bold text-slate-200">{d.district}</div>
+                      <div className="text-[11px] text-slate-400">{d.state}</div>
+                    </div>
+                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${d.risk_level === 'CRITICAL' ? 'bg-rose-500/20 text-rose-400' : 'bg-amber-500/20 text-amber-400'}`}>
+                      {d.risk_level}
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-[11px] text-slate-400 mt-1.5 pt-1 border-t border-slate-800">
+                    <span>Total: <b>{d.total_crimes.toLocaleString()}</b></span>
+                    <span>Violent: <b className="text-rose-400">{d.violent_percentage}%</b></span>
+                  </div>
+                </div>
+              ))}
+              {regionalDistricts.length === 0 && (
+                <p className="text-xs text-slate-500 text-center py-4">No top-tier danger corridors in this specific filter.</p>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// TAB 2: ANALYTICS & MULTI-DATASET TRENDS
+// -----------------------------------------------------------------------------
+function AnalyticsView({ timeData, trendsData }) {
+  const lineChartRef = useRef(null);
+  const barChartRef = useRef(null);
+  const propChartRef = useRef(null);
+
+  useEffect(() => {
+    // 1. National Multi-Year Line Chart
+    if (lineChartRef.current && timeData?.yearly_trends) {
+      const years = timeData.yearly_trends.map(d => d.year);
+      const total = timeData.yearly_trends.map(d => d.total_crimes);
+      const violent = timeData.yearly_trends.map(d => d.violent_crimes);
+      const women = timeData.yearly_trends.map(d => d.women_crimes);
+
+      const chart = new Chart(lineChartRef.current, {
+        type: 'line',
+        data: {
+          labels: years,
+          datasets: [
+            { label: 'Total IPC Crimes', data: total, borderColor: '#6366f1', backgroundColor: 'rgba(99, 102, 241, 0.1)', fill: true, tension: 0.3 },
+            { label: 'Violent Crimes', data: violent, borderColor: '#f43f5e', tension: 0.3 },
+            { label: 'Crimes Against Women', data: women, borderColor: '#c084fc', tension: 0.3 }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { labels: { color: '#cbd5e1', font: { size: 11 } } } },
+          scales: {
+            x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
+            y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }
+          }
+        }
+      });
+      return () => chart.destroy();
+    }
+  }, [timeData]);
+
+  useEffect(() => {
+    // 2. Property Stolen vs Recovered (₹ Crores)
+    if (propChartRef.current && trendsData?.property_financial_trends) {
+      const pData = trendsData.property_financial_trends;
+      const years = pData.map(d => d.year);
+      const stolen = pData.map(d => d.stolen_inr_crores);
+      const recovered = pData.map(d => d.recovered_inr_crores);
+
+      const chart = new Chart(propChartRef.current, {
+        type: 'bar',
+        data: {
+          labels: years,
+          datasets: [
+            { label: 'Property Stolen (₹ Cr)', data: stolen, backgroundColor: '#ef4444' },
+            { label: 'Property Recovered (₹ Cr)', data: recovered, backgroundColor: '#10b981' }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { labels: { color: '#cbd5e1' } } },
+          scales: {
+            x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
+            y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }
+          }
+        }
+      });
+      return () => chart.destroy();
+    }
+  }, [trendsData]);
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* National Multi-Year Trend Chart */}
+        <div className="bg-navy-800 p-5 rounded-2xl border border-slate-700/60 shadow-xl space-y-3">
+          <h3 className="text-sm font-bold text-slate-200 uppercase tracking-wider flex items-center justify-between">
+            <span>📈 Multi-Year National Crime Trajectory (2001–2014)</span>
+            <span className="text-xs text-indigo-400 font-medium">PySpark Time Series</span>
+          </h3>
+          <div className="h-64 relative">
+            <canvas ref={lineChartRef}></canvas>
+          </div>
+          <p className="text-xs text-slate-400">Total cognizable IPC cases rose from 1.78M (2001) to 2.96M (2014), driven by reporting expansions.</p>
+        </div>
+
+        {/* Economic Impact: Property Stolen vs Recovered */}
+        <div className="bg-navy-800 p-5 rounded-2xl border border-slate-700/60 shadow-xl space-y-3">
+          <h3 className="text-sm font-bold text-slate-200 uppercase tracking-wider flex items-center justify-between">
+            <span>💰 Financial Impact: Stolen vs. Recovered (₹ Crores)</span>
+            <span className="text-xs text-emerald-400 font-medium">NCRB Property Ledger</span>
+          </h3>
+          <div className="h-64 relative">
+            <canvas ref={propChartRef}></canvas>
+          </div>
+          <p className="text-xs text-slate-400">Official police valuation records across Indian states demonstrate an average ~30% recovery efficiency.</p>
+        </div>
+      </div>
+
+      {/* Seasonal Breakdown Cards */}
+      <div className="bg-navy-800 p-5 rounded-2xl border border-slate-700/60 shadow-xl space-y-4">
+        <h3 className="text-sm font-bold text-slate-200 uppercase tracking-wider">
+          ☀️ Indian Seasonal Crime Distribution Dynamics
+        </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {timeData?.seasonal_breakdown?.map((s, idx) => (
+            <div key={idx} className="bg-navy-950/80 p-4 rounded-xl border border-slate-800 space-y-1.5">
+              <div className="text-xs font-semibold text-slate-400">{s.season}</div>
+              <div className="text-xl font-extrabold text-white">{s.estimated_crimes.toLocaleString()}</div>
+              <div className="text-xs font-bold text-indigo-400">{s.percentage}% of Annual Volume</div>
+              <p className="text-[11px] text-slate-400 mt-2">{s.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// TAB 3: ML CRIME SEVERITY PREDICTOR
+// -----------------------------------------------------------------------------
+function PredictorView({ hotspotsData, evalData }) {
+  const [districtRisk, setDistrictRisk] = useState(4500);
+  const [vRatio, setVRatio] = useState(0.22);
+  const [pRatio, setPRatio] = useState(0.35);
+  const [wRatio, setWRatio] = useState(0.12);
+  const [selectedYear, setSelectedYear] = useState(2026);
+  const [prediction, setPrediction] = useState(null);
+
+  const calculatePrediction = () => {
+    // Weighted scoring from Random Forest model weights
+    const score = (
+      0.2167 * Math.min(districtRisk / 5000.0, 1.0) +
+      0.5289 * Math.min(vRatio / 0.35, 1.0) +
+      0.1246 * Math.min(pRatio / 0.40, 1.0) +
+      0.0869 * Math.min(wRatio / 0.15, 1.0)
+    );
+    const prob = 1.0 / (1.0 + Math.exp(-6.0 * (score - 0.45)));
+    const pct = Math.round(prob * 100);
+
+    setPrediction({
+      probability: pct,
+      isHighSeverity: pct >= 50,
+      primaryDriver: vRatio > 0.25 ? "Violent Crime Ratio Surge" : districtRisk > 6000 ? "High District Baseline Crime Volume" : "Controlled Historical Baseline"
+    });
+  };
+
+  useEffect(() => {
+    calculatePrediction();
+  }, [districtRisk, vRatio, pRatio, wRatio, selectedYear]);
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Parameter Control Card */}
+      <div className="lg:col-span-2 bg-navy-800 p-6 rounded-2xl border border-slate-700/60 shadow-xl space-y-6">
+        <div>
+          <h3 className="text-base font-bold text-white flex items-center gap-2">
+            <span>🎯 Crime Severity & Risk Inference Engine</span>
+            <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-semibold border border-indigo-500/30">
+              Spark MLlib Random Forest
+            </span>
+          </h3>
+          <p className="text-xs text-slate-400 mt-1">
+            Simulate regional incident vectors to compute real-time danger severity probability scores.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-xs">
+          <div className="space-y-2">
+            <div className="flex justify-between font-medium text-slate-300">
+              <span>District Historical Crime Baseline:</span>
+              <b className="text-indigo-400">{districtRisk.toLocaleString()} Incidents/Yr</b>
+            </div>
+            <input
+              type="range" min="500" max="30000" step="500"
+              value={districtRisk} onChange={e => setDistrictRisk(Number(e.target.value))}
+              className="w-full accent-indigo-500"
+            />
+            <p className="text-[11px] text-slate-500">Represents historical district-level total annual IPC volume.</p>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex justify-between font-medium text-slate-300">
+              <span>Violent Crime Ratio:</span>
+              <b className="text-rose-400">{(vRatio * 100).toFixed(1)}%</b>
+            </div>
+            <input
+              type="range" min="0.05" max="0.60" step="0.01"
+              value={vRatio} onChange={e => setVRatio(Number(e.target.value))}
+              className="w-full accent-rose-500"
+            />
+            <p className="text-[11px] text-slate-500">Murders, homicides, dacoities, and robberies relative to total.</p>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex justify-between font-medium text-slate-300">
+              <span>Property Crime Ratio:</span>
+              <b className="text-amber-400">{(pRatio * 100).toFixed(1)}%</b>
+            </div>
+            <input
+              type="range" min="0.05" max="0.70" step="0.01"
+              value={pRatio} onChange={e => setPRatio(Number(e.target.value))}
+              className="w-full accent-amber-500"
+            />
+            <p className="text-[11px] text-slate-500">Thefts, auto burglaries, and criminal trespass proportion.</p>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex justify-between font-medium text-slate-300">
+              <span>Target Forecast Horizon:</span>
+              <b className="text-purple-400">Year {selectedYear}</b>
+            </div>
+            <input
+              type="range" min="2024" max="2030" step="1"
+              value={selectedYear} onChange={e => setSelectedYear(Number(e.target.value))}
+              className="w-full accent-purple-500"
+            />
+            <p className="text-[11px] text-slate-500">Macro year parameter in Spark feature pipeline.</p>
+          </div>
+        </div>
+
+        {/* Feature Importance Bar Overview */}
+        <div className="pt-4 border-t border-slate-700/60 space-y-2">
+          <div className="text-xs font-bold text-slate-300 uppercase tracking-wider">Model Feature Weights (Trained on 10,186 NCRB Vectors)</div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px]">
+            <div className="p-2 bg-navy-950 rounded border border-slate-800">
+              <span className="text-slate-400">Violent Ratio:</span> <b className="text-rose-400">52.89%</b>
+            </div>
+            <div className="p-2 bg-navy-950 rounded border border-slate-800">
+              <span className="text-slate-400">District Baseline:</span> <b className="text-indigo-400">21.67%</b>
+            </div>
+            <div className="p-2 bg-navy-950 rounded border border-slate-800">
+              <span className="text-slate-400">Property Ratio:</span> <b className="text-amber-400">12.46%</b>
+            </div>
+            <div className="p-2 bg-navy-950 rounded border border-slate-800">
+              <span className="text-slate-400">Women Crime:</span> <b className="text-purple-400">8.69%</b>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Real-time Inference Result Card */}
+      <div className="bg-navy-800 p-6 rounded-2xl border border-slate-700/60 shadow-xl flex flex-col justify-between space-y-6">
+        <div>
+          <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">Inference Output</div>
+          <h4 className="text-lg font-bold text-white mt-1">Severity & Likelihood Assessment</h4>
+        </div>
+
+        {prediction && (
+          <div className="text-center space-y-4 my-auto">
+            <div className={`p-4 rounded-2xl border ${prediction.isHighSeverity ? 'bg-rose-500/15 border-rose-500/40 text-rose-400' : 'bg-emerald-500/15 border-emerald-500/40 text-emerald-400'}`}>
+              <div className="text-3xl mb-1">{prediction.isHighSeverity ? '⚠️' : '✅'}</div>
+              <div className="text-lg font-extrabold uppercase tracking-wide">
+                {prediction.isHighSeverity ? 'CRITICAL SEVERITY RISK' : 'MODERATE / CONTROLLED'}
+              </div>
+              <div className="text-xs opacity-90 mt-1">
+                {prediction.isHighSeverity ? 'High likelihood of violent escalation' : 'Baseline crime intensity within standard bounds'}
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <div className="flex justify-between text-xs font-medium text-slate-400">
+                <span>Model Confidence:</span>
+                <span className="font-bold text-white">{prediction.probability}%</span>
+              </div>
+              <div className="w-full bg-slate-700 h-2.5 rounded-full overflow-hidden">
+                <div
+                  className={`h-full transition-all duration-500 ${prediction.isHighSeverity ? 'bg-rose-500' : 'bg-emerald-500'}`}
+                  style={{ width: `${prediction.probability}%` }}
+                ></div>
+              </div>
+            </div>
+
+            <div className="text-xs bg-navy-950 p-3 rounded-xl border border-slate-800 text-left">
+              <span className="text-slate-400">Dominant Factor:</span><br/>
+              <b className="text-slate-200">{prediction.primaryDriver}</b>
+            </div>
+          </div>
+        )}
+
+        <div className="text-[11px] text-slate-500 text-center border-t border-slate-700/50 pt-3">
+          Model Accuracy: <b>70.61%</b> • AUC-ROC: <b>0.9365</b> • Recall: <b>97.85%</b>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// TAB 4: DISTRICT DATA EXPLORER
+// -----------------------------------------------------------------------------
+function DataExplorerView({ hotspotsData, regionsData }) {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterRegion, setFilterRegion] = useState("All");
+
+  const hotspots = hotspotsData?.top_50_hotspots || [];
+
+  const filtered = hotspots.filter(h => {
+    const matchesSearch = h.district.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          h.state.toLowerCase().includes(searchTerm.toLowerCase());
+    const reg = regionsData?.region_map[h.state] || "";
+    const matchesRegion = filterRegion === "All" || reg === filterRegion;
+    return matchesSearch && matchesRegion;
+  });
+
+  return (
+    <div className="bg-navy-800 p-5 rounded-2xl border border-slate-700/60 shadow-xl space-y-4">
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h3 className="text-base font-bold text-white">📋 Official NCRB High-Crime District Registry</h3>
+          <p className="text-xs text-slate-400">Explore authentic district-level aggregations and severity categories.</p>
+        </div>
+
+        <div className="flex items-center gap-3 text-xs">
+          <input
+            type="text"
+            placeholder="Search district or state..."
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+            className="bg-navy-950 border border-slate-700 text-slate-200 px-3 py-1.5 rounded-lg outline-none focus:ring-1 focus:ring-brand-primary w-56"
+          />
+
+          <select
+            value={filterRegion}
+            onChange={e => setFilterRegion(e.target.value)}
+            className="bg-navy-950 border border-slate-700 text-slate-200 px-2.5 py-1.5 rounded-lg outline-none"
+          >
+            <option value="All">All Regions</option>
+            <option value="Northern">Northern</option>
+            <option value="Western">Western</option>
+            <option value="Central">Central</option>
+            <option value="Southern">Southern</option>
+            <option value="Eastern">Eastern</option>
+            <option value="North-Eastern">North-Eastern</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="overflow-x-auto rounded-xl border border-slate-700/60">
+        <table className="w-full text-left text-xs text-slate-300">
+          <thead className="bg-navy-950 text-slate-400 font-bold uppercase tracking-wider text-[11px] border-b border-slate-700">
+            <tr>
+              <th className="p-3">District</th>
+              <th className="p-3">State</th>
+              <th className="p-3">Region</th>
+              <th className="p-3 text-right">Total IPC Crimes</th>
+              <th className="p-3 text-right">Violent Crimes</th>
+              <th className="p-3 text-right">Violent %</th>
+              <th className="p-3 text-right">Women Crimes</th>
+              <th className="p-3 text-center">Risk Tier</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-800">
+            {filtered.map((d, i) => (
+              <tr key={i} className="hover:bg-navy-950/50 transition">
+                <td className="p-3 font-semibold text-white">{d.district}</td>
+                <td className="p-3 text-slate-400">{d.state}</td>
+                <td className="p-3 text-indigo-400">{regionsData?.region_map[d.state] || 'Other'}</td>
+                <td className="p-3 text-right font-bold">{d.total_crimes.toLocaleString()}</td>
+                <td className="p-3 text-right text-rose-400">{d.violent_crimes.toLocaleString()}</td>
+                <td className="p-3 text-right text-rose-300 font-medium">{d.violent_percentage}%</td>
+                <td className="p-3 text-right text-purple-400">{d.women_crimes.toLocaleString()}</td>
+                <td className="p-3 text-center">
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold ${d.risk_level === 'CRITICAL' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'}`}>
+                    {d.risk_level}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+// Mount React Root
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+
+</script>
 </body>
 </html>

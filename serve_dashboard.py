@@ -15,7 +15,14 @@ REACT_DIR = Path(__file__).resolve().parent / "react-dashboard"
 
 
 class CrimeGISRequestHandler(http.server.SimpleHTTPRequestHandler):
-    """Custom HTTP handler with CORS and cache control."""
+    """Custom HTTP handler with CORS, cache control, and correct MIME types."""
+    extensions_map = {
+        **http.server.SimpleHTTPRequestHandler.extensions_map,
+        '.jsx': 'text/javascript',
+        '.json': 'application/json',
+        '.geojson': 'application/json'
+    }
+
     def end_headers(self):
         self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Cache-Control", "no-cache")
