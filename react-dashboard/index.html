@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>India Crime GIS Intelligence Dashboard</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            },
+            colors: {
+              navy: {
+                800: '#0f172a',
+                900: '#090d16',
+                950: '#030712'
+              },
+              brand: {
+                primary: '#6366f1',
+                accent: '#f43f5e',
+                warning: '#f59e0b',
+                success: '#10b981'
+              }
+            }
+          }
+        }
+      }
+    </script>
+    
+    <!-- Leaflet & Esri ArcGIS Styles & Scripts -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- Esri ArcGIS Leaflet Plugin -->
+    <script src="https://unpkg.com/esri-leaflet@3.0.10/dist/esri-leaflet.js"></script>
+    
+    <!-- Chart.js for High Performance Visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- React 18 & Babel for seamless in-browser execution -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+      body {
+        background-color: #090d16;
+        color: #f1f5f9;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+      .leaflet-container {
+        background: #090d16 !important;
+      }
+      .leaflet-popup-content-wrapper {
+        background: #1e293b !important;
+        color: #f8fafc !important;
+        border-radius: 12px !important;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .leaflet-popup-tip {
+        background: #1e293b !important;
+      }
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #0f172a;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #334155;
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #475569;
+      }
+      .pulse-marker {
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        0% { transform: scale(0.95); opacity: 0.9; }
+        50% { transform: scale(1.15); opacity: 0.6; }
+        100% { transform: scale(0.95); opacity: 0.9; }
+      }
+    </style>
+</head>
+<body class="min-h-screen antialiased bg-navy-900 text-slate-100 flex flex-col">
+    <div id="root" class="flex-grow flex flex-col"></div>
+    <script type="text/babel" src="app.jsx"></script>
+</body>
+</html>

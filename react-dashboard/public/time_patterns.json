@@ -1,0 +1,410 @@
+{
+  "yearly_trends": [
+    {
+      "year": 2001,
+      "total_crimes": 1787759,
+      "violent_crimes": 415222,
+      "property_crimes": 606788,
+      "women_crimes": 122295,
+      "economic_crimes": 55261,
+      "other_crimes": 590451
+    },
+    {
+      "year": 2002,
+      "total_crimes": 1796257,
+      "violent_crimes": 404725,
+      "property_crimes": 591385,
+      "women_crimes": 122745,
+      "economic_crimes": 58091,
+      "other_crimes": 621820
+    },
+    {
+      "year": 2003,
+      "total_crimes": 1736657,
+      "violent_crimes": 389232,
+      "property_crimes": 583301,
+      "women_crimes": 121543,
+      "economic_crimes": 56843,
+      "other_crimes": 590118
+    },
+    {
+      "year": 2004,
+      "total_crimes": 1851319,
+      "violent_crimes": 415064,
+      "property_crimes": 638580,
+      "women_crimes": 136178,
+      "economic_crimes": 60576,
+      "other_crimes": 604647
+    },
+    {
+      "year": 2005,
+      "total_crimes": 1838586,
+      "violent_crimes": 406501,
+      "property_crimes": 636330,
+      "women_crimes": 135992,
+      "economic_crimes": 62076,
+      "other_crimes": 600596
+    },
+    {
+      "year": 2006,
+      "total_crimes": 1892594,
+      "violent_crimes": 402308,
+      "property_crimes": 640374,
+      "women_crimes": 146057,
+      "economic_crimes": 66556,
+      "other_crimes": 640363
+    },
+    {
+      "year": 2007,
+      "total_crimes": 2005642,
+      "violent_crimes": 418472,
+      "property_crimes": 661304,
+      "women_crimes": 164230,
+      "economic_crimes": 74350,
+      "other_crimes": 690325
+    },
+    {
+      "year": 2008,
+      "total_crimes": 2113143,
+      "violent_crimes": 438987,
+      "property_crimes": 727264,
+      "women_crimes": 172863,
+      "economic_crimes": 75828,
+      "other_crimes": 702105
+    },
+    {
+      "year": 2009,
+      "total_crimes": 2147554,
+      "violent_crimes": 442116,
+      "property_crimes": 740460,
+      "women_crimes": 179432,
+      "economic_crimes": 81454,
+      "other_crimes": 709307
+    },
+    {
+      "year": 2010,
+      "total_crimes": 2254929,
+      "violent_crimes": 462804,
+      "property_crimes": 750787,
+      "women_crimes": 187381,
+      "economic_crimes": 87507,
+      "other_crimes": 771628
+    },
+    {
+      "year": 2011,
+      "total_crimes": 2361186,
+      "violent_crimes": 493452,
+      "property_crimes": 774104,
+      "women_crimes": 199132,
+      "economic_crimes": 96720,
+      "other_crimes": 804133
+    },
+    {
+      "year": 2012,
+      "total_crimes": 2414797,
+      "violent_crimes": 535456,
+      "property_crimes": 767706,
+      "women_crimes": 209956,
+      "economic_crimes": 106039,
+      "other_crimes": 801388
+    },
+    {
+      "year": 2013,
+      "total_crimes": 2675733,
+      "violent_crimes": 577214,
+      "property_crimes": 849645,
+      "women_crimes": 265101,
+      "economic_crimes": 116687,
+      "other_crimes": 879629
+    },
+    {
+      "year": 2014,
+      "total_crimes": 2961785,
+      "violent_crimes": 501163,
+      "property_crimes": 1084260,
+      "women_crimes": 339823,
+      "economic_crimes": 119036,
+      "other_crimes": 947069
+    }
+  ],
+  "seasonal_breakdown": [
+    {
+      "season": "Winter (Dec-Feb)",
+      "estimated_crimes": 681210,
+      "percentage": 23.0,
+      "description": "High burglary & theft during fog/low visibility"
+    },
+    {
+      "season": "Summer (Mar-May)",
+      "estimated_crimes": 799681,
+      "percentage": 27.0,
+      "description": "Peak violent altercations and property disputes"
+    },
+    {
+      "season": "Monsoon (Jun-Aug)",
+      "estimated_crimes": 651592,
+      "percentage": 22.0,
+      "description": "Reduced outdoor mobility, moderate crime volume"
+    },
+    {
+      "season": "Festive / Autumn (Sep-Nov)",
+      "estimated_crimes": 829299,
+      "percentage": 28.0,
+      "description": "Spike in commercial burglary, thefts, and crowd incidents"
+    }
+  ],
+  "heatmap_matrix": [
+    [
+      481,
+      481,
+      518,
+      518,
+      592,
+      629,
+      481
+    ],
+    [
+      481,
+      481,
+      518,
+      518,
+      592,
+      629,
+      481
+    ],
+    [
+      481,
+      481,
+      518,
+      518,
+      592,
+      629,
+      481
+    ],
+    [
+      111,
+      111,
+      119,
+      119,
+      136,
+      145,
+      111
+    ],
+    [
+      111,
+      111,
+      119,
+      119,
+      136,
+      145,
+      111
+    ],
+    [
+      111,
+      111,
+      119,
+      119,
+      136,
+      145,
+      111
+    ],
+    [
+      111,
+      111,
+      119,
+      119,
+      136,
+      145,
+      111
+    ],
+    [
+      111,
+      111,
+      119,
+      119,
+      136,
+      145,
+      111
+    ],
+    [
+      111,
+      111,
+      119,
+      119,
+      136,
+      145,
+      111
+    ],
+    [
+      333,
+      333,
+      358,
+      358,
+      410,
+      435,
+      333
+    ],
+    [
+      333,
+      333,
+      358,
+      358,
+      410,
+      435,
+      333
+    ],
+    [
+      333,
+      333,
+      358,
+      358,
+      410,
+      435,
+      333
+    ],
+    [
+      333,
+      333,
+      358,
+      358,
+      410,
+      435,
+      333
+    ],
+    [
+      333,
+      333,
+      358,
+      358,
+      410,
+      435,
+      333
+    ],
+    [
+      333,
+      333,
+      358,
+      358,
+      410,
+      435,
+      333
+    ],
+    [
+      333,
+      333,
+      358,
+      358,
+      410,
+      435,
+      333
+    ],
+    [
+      333,
+      333,
+      358,
+      358,
+      410,
+      435,
+      333
+    ],
+    [
+      333,
+      333,
+      358,
+      358,
+      410,
+      435,
+      333
+    ],
+    [
+      333,
+      333,
+      358,
+      358,
+      410,
+      435,
+      333
+    ],
+    [
+      333,
+      333,
+      358,
+      358,
+      410,
+      435,
+      333
+    ],
+    [
+      481,
+      481,
+      518,
+      518,
+      592,
+      629,
+      481
+    ],
+    [
+      481,
+      481,
+      518,
+      518,
+      592,
+      629,
+      481
+    ],
+    [
+      481,
+      481,
+      518,
+      518,
+      592,
+      629,
+      481
+    ],
+    [
+      481,
+      481,
+      518,
+      518,
+      592,
+      629,
+      481
+    ]
+  ],
+  "days": [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday"
+  ],
+  "hours": [
+    "00:00",
+    "01:00",
+    "02:00",
+    "03:00",
+    "04:00",
+    "05:00",
+    "06:00",
+    "07:00",
+    "08:00",
+    "09:00",
+    "10:00",
+    "11:00",
+    "12:00",
+    "13:00",
+    "14:00",
+    "15:00",
+    "16:00",
+    "17:00",
+    "18:00",
+    "19:00",
+    "20:00",
+    "21:00",
+    "22:00",
+    "23:00"
+  ],
+  "total_national_crimes": 29837941
+}

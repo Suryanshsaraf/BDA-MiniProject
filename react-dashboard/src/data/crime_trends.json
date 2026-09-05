@@ -1,0 +1,539 @@
+{
+  "category_trends": [
+    {
+      "year": 2001,
+      "violent": 415222,
+      "property": 606788,
+      "women": 122295,
+      "economic": 55261,
+      "other": 590451,
+      "total": 1787759
+    },
+    {
+      "year": 2002,
+      "violent": 404725,
+      "property": 591385,
+      "women": 122745,
+      "economic": 58091,
+      "other": 621820,
+      "total": 1796257
+    },
+    {
+      "year": 2003,
+      "violent": 389232,
+      "property": 583301,
+      "women": 121543,
+      "economic": 56843,
+      "other": 590118,
+      "total": 1736657
+    },
+    {
+      "year": 2004,
+      "violent": 415064,
+      "property": 638580,
+      "women": 136178,
+      "economic": 60576,
+      "other": 604647,
+      "total": 1851319
+    },
+    {
+      "year": 2005,
+      "violent": 406501,
+      "property": 636330,
+      "women": 135992,
+      "economic": 62076,
+      "other": 600596,
+      "total": 1838586
+    },
+    {
+      "year": 2006,
+      "violent": 402308,
+      "property": 640374,
+      "women": 146057,
+      "economic": 66556,
+      "other": 640363,
+      "total": 1892594
+    },
+    {
+      "year": 2007,
+      "violent": 418472,
+      "property": 661304,
+      "women": 164230,
+      "economic": 74350,
+      "other": 690325,
+      "total": 2005642
+    },
+    {
+      "year": 2008,
+      "violent": 438987,
+      "property": 727264,
+      "women": 172863,
+      "economic": 75828,
+      "other": 702105,
+      "total": 2113143
+    },
+    {
+      "year": 2009,
+      "violent": 442116,
+      "property": 740460,
+      "women": 179432,
+      "economic": 81454,
+      "other": 709307,
+      "total": 2147554
+    },
+    {
+      "year": 2010,
+      "violent": 462804,
+      "property": 750787,
+      "women": 187381,
+      "economic": 87507,
+      "other": 771628,
+      "total": 2254929
+    },
+    {
+      "year": 2011,
+      "violent": 493452,
+      "property": 774104,
+      "women": 199132,
+      "economic": 96720,
+      "other": 804133,
+      "total": 2361186
+    },
+    {
+      "year": 2012,
+      "violent": 535456,
+      "property": 767706,
+      "women": 209956,
+      "economic": 106039,
+      "other": 801388,
+      "total": 2414797
+    },
+    {
+      "year": 2013,
+      "violent": 577214,
+      "property": 849645,
+      "women": 265101,
+      "economic": 116687,
+      "other": 879629,
+      "total": 2675733
+    },
+    {
+      "year": 2014,
+      "violent": 501163,
+      "property": 1084260,
+      "women": 339823,
+      "economic": 119036,
+      "other": 947069,
+      "total": 2961785
+    }
+  ],
+  "property_financial_trends": [
+    {
+      "year": 2001,
+      "stolen_inr_crores": 3034.46,
+      "recovered_inr_crores": 894.65,
+      "financial_recovery_rate_pct": 29.48,
+      "cases_stolen": 790836,
+      "cases_recovered": 272842,
+      "case_recovery_rate_pct": 34.5
+    },
+    {
+      "year": 2002,
+      "stolen_inr_crores": 4934.46,
+      "recovered_inr_crores": 954.84,
+      "financial_recovery_rate_pct": 19.35,
+      "cases_stolen": 774302,
+      "cases_recovered": 281302,
+      "case_recovery_rate_pct": 36.33
+    },
+    {
+      "year": 2003,
+      "stolen_inr_crores": 3470.08,
+      "recovered_inr_crores": 895.19,
+      "financial_recovery_rate_pct": 25.8,
+      "cases_stolen": 755556,
+      "cases_recovered": 279802,
+      "case_recovery_rate_pct": 37.03
+    },
+    {
+      "year": 2004,
+      "stolen_inr_crores": 4723.39,
+      "recovered_inr_crores": 938.94,
+      "financial_recovery_rate_pct": 19.88,
+      "cases_stolen": 812392,
+      "cases_recovered": 294758,
+      "case_recovery_rate_pct": 36.28
+    },
+    {
+      "year": 2005,
+      "stolen_inr_crores": 4818.0,
+      "recovered_inr_crores": 1152.0,
+      "financial_recovery_rate_pct": 23.91,
+      "cases_stolen": 799578,
+      "cases_recovered": 307632,
+      "case_recovery_rate_pct": 38.47
+    },
+    {
+      "year": 2006,
+      "stolen_inr_crores": 4807.89,
+      "recovered_inr_crores": 1214.46,
+      "financial_recovery_rate_pct": 25.26,
+      "cases_stolen": 813294,
+      "cases_recovered": 306076,
+      "case_recovery_rate_pct": 37.63
+    },
+    {
+      "year": 2007,
+      "stolen_inr_crores": 5361.48,
+      "recovered_inr_crores": 1393.09,
+      "financial_recovery_rate_pct": 25.98,
+      "cases_stolen": 857074,
+      "cases_recovered": 316587,
+      "case_recovery_rate_pct": 36.94
+    },
+    {
+      "year": 2008,
+      "stolen_inr_crores": 7705.91,
+      "recovered_inr_crores": 1536.3,
+      "financial_recovery_rate_pct": 19.94,
+      "cases_stolen": 912990,
+      "cases_recovered": 323048,
+      "case_recovery_rate_pct": 35.38
+    },
+    {
+      "year": 2009,
+      "stolen_inr_crores": 8990.01,
+      "recovered_inr_crores": 1752.23,
+      "financial_recovery_rate_pct": 19.49,
+      "cases_stolen": 911884,
+      "cases_recovered": 310796,
+      "case_recovery_rate_pct": 34.08
+    },
+    {
+      "year": 2010,
+      "stolen_inr_crores": 12532.72,
+      "recovered_inr_crores": 3619.26,
+      "financial_recovery_rate_pct": 28.88,
+      "cases_stolen": 946256,
+      "cases_recovered": 326510,
+      "case_recovery_rate_pct": 34.51
+    }
+  ],
+  "women_crimes_state_rankings": [
+    {
+      "state": "Andhra Pradesh",
+      "rape": 26958,
+      "kidnapping": 29872,
+      "dowry_deaths": 12430,
+      "assault": 103998,
+      "cruelty_by_husband": 238014,
+      "total_crimes_against_women": 411272
+    },
+    {
+      "state": "West Bengal",
+      "rape": 41574,
+      "kidnapping": 43546,
+      "dowry_deaths": 10344,
+      "assault": 45742,
+      "cruelty_by_husband": 261336,
+      "total_crimes_against_women": 402542
+    },
+    {
+      "state": "Uttar Pradesh",
+      "rape": 38116,
+      "kidnapping": 95180,
+      "dowry_deaths": 47648,
+      "assault": 59396,
+      "cruelty_by_husband": 155234,
+      "total_crimes_against_women": 395574
+    },
+    {
+      "state": "Rajasthan",
+      "rape": 31596,
+      "kidnapping": 49342,
+      "dowry_deaths": 10132,
+      "assault": 61706,
+      "cruelty_by_husband": 200202,
+      "total_crimes_against_women": 352978
+    },
+    {
+      "state": "Madhya Pradesh",
+      "rape": 72174,
+      "kidnapping": 18486,
+      "dowry_deaths": 18072,
+      "assault": 159756,
+      "cruelty_by_husband": 79938,
+      "total_crimes_against_women": 348426
+    },
+    {
+      "state": "Maharashtra",
+      "rape": 35972,
+      "kidnapping": 21706,
+      "dowry_deaths": 8498,
+      "assault": 78438,
+      "cruelty_by_husband": 160726,
+      "total_crimes_against_women": 305340
+    },
+    {
+      "state": "Assam",
+      "rape": 32356,
+      "kidnapping": 45840,
+      "dowry_deaths": 2552,
+      "assault": 27240,
+      "cruelty_by_husband": 78776,
+      "total_crimes_against_women": 186764
+    },
+    {
+      "state": "Kerala",
+      "rape": 14894,
+      "kidnapping": 3796,
+      "dowry_deaths": 602,
+      "assault": 62980,
+      "cruelty_by_husband": 92148,
+      "total_crimes_against_women": 174420
+    },
+    {
+      "state": "Gujarat",
+      "rape": 8498,
+      "kidnapping": 25836,
+      "dowry_deaths": 1004,
+      "assault": 17996,
+      "cruelty_by_husband": 118862,
+      "total_crimes_against_women": 172196
+    },
+    {
+      "state": "Bihar",
+      "rape": 26248,
+      "kidnapping": 38778,
+      "dowry_deaths": 27096,
+      "assault": 15152,
+      "cruelty_by_husband": 51360,
+      "total_crimes_against_women": 158634
+    },
+    {
+      "state": "Odisha",
+      "rape": 22860,
+      "kidnapping": 16582,
+      "dowry_deaths": 9110,
+      "assault": 59892,
+      "cruelty_by_husband": 37394,
+      "total_crimes_against_women": 145838
+    },
+    {
+      "state": "Karnataka",
+      "rape": 10348,
+      "kidnapping": 10630,
+      "dowry_deaths": 5836,
+      "assault": 47398,
+      "cruelty_by_husband": 60104,
+      "total_crimes_against_women": 134316
+    },
+    {
+      "state": "Tamil Nadu",
+      "rape": 13904,
+      "kidnapping": 24872,
+      "dowry_deaths": 4634,
+      "assault": 38658,
+      "cruelty_by_husband": 36376,
+      "total_crimes_against_women": 118444
+    },
+    {
+      "state": "Haryana",
+      "rape": 12820,
+      "kidnapping": 12258,
+      "dowry_deaths": 6260,
+      "assault": 10646,
+      "cruelty_by_husband": 54224,
+      "total_crimes_against_women": 96208
+    },
+    {
+      "state": "Delhi",
+      "rape": 12848,
+      "kidnapping": 31300,
+      "dowry_deaths": 3164,
+      "assault": 15068,
+      "cruelty_by_husband": 30422,
+      "total_crimes_against_women": 92802
+    },
+    {
+      "state": "Chhattisgarh",
+      "rape": 23676,
+      "kidnapping": 5260,
+      "dowry_deaths": 2284,
+      "assault": 38330,
+      "cruelty_by_husband": 19146,
+      "total_crimes_against_women": 88696
+    },
+    {
+      "state": "Jharkhand",
+      "rape": 18318,
+      "kidnapping": 10564,
+      "dowry_deaths": 6582,
+      "assault": 7970,
+      "cruelty_by_husband": 16818,
+      "total_crimes_against_women": 60252
+    },
+    {
+      "state": "Punjab",
+      "rape": 10918,
+      "kidnapping": 10770,
+      "dowry_deaths": 3092,
+      "assault": 8094,
+      "cruelty_by_husband": 23996,
+      "total_crimes_against_women": 56870
+    },
+    {
+      "state": "Jammu & Kashmir",
+      "rape": 5620,
+      "kidnapping": 17640,
+      "dowry_deaths": 270,
+      "assault": 23018,
+      "cruelty_by_husband": 3600,
+      "total_crimes_against_women": 50148
+    },
+    {
+      "state": "Tripura",
+      "rape": 4116,
+      "kidnapping": 1750,
+      "dowry_deaths": 628,
+      "assault": 5546,
+      "cruelty_by_husband": 13028,
+      "total_crimes_against_women": 25068
+    },
+    {
+      "state": "Uttarakhand",
+      "rape": 2756,
+      "kidnapping": 4668,
+      "dowry_deaths": 1812,
+      "assault": 3090,
+      "cruelty_by_husband": 8284,
+      "total_crimes_against_women": 20610
+    },
+    {
+      "state": "Himachal Pradesh",
+      "rape": 3608,
+      "kidnapping": 3082,
+      "dowry_deaths": 110,
+      "assault": 7194,
+      "cruelty_by_husband": 6490,
+      "total_crimes_against_women": 20484
+    },
+    {
+      "state": "Manipur",
+      "rape": 774,
+      "kidnapping": 2114,
+      "dowry_deaths": 4,
+      "assault": 1008,
+      "cruelty_by_husband": 438,
+      "total_crimes_against_women": 4338
+    },
+    {
+      "state": "Arunachal Pradesh",
+      "rape": 1000,
+      "kidnapping": 1116,
+      "dowry_deaths": 4,
+      "assault": 1568,
+      "cruelty_by_husband": 334,
+      "total_crimes_against_women": 4022
+    },
+    {
+      "state": "Meghalaya",
+      "rape": 2040,
+      "kidnapping": 528,
+      "dowry_deaths": 30,
+      "assault": 1064,
+      "cruelty_by_husband": 330,
+      "total_crimes_against_women": 3992
+    },
+    {
+      "state": "Chandigarh",
+      "rape": 562,
+      "kidnapping": 1068,
+      "dowry_deaths": 84,
+      "assault": 628,
+      "cruelty_by_husband": 1614,
+      "total_crimes_against_women": 3956
+    },
+    {
+      "state": "Mizoram",
+      "rape": 1652,
+      "kidnapping": 20,
+      "dowry_deaths": 8,
+      "assault": 1632,
+      "cruelty_by_husband": 108,
+      "total_crimes_against_women": 3420
+    },
+    {
+      "state": "Goa",
+      "rape": 700,
+      "kidnapping": 328,
+      "dowry_deaths": 38,
+      "assault": 656,
+      "cruelty_by_husband": 382,
+      "total_crimes_against_women": 2104
+    },
+    {
+      "state": "Puducherry",
+      "rape": 154,
+      "kidnapping": 242,
+      "dowry_deaths": 52,
+      "assault": 1226,
+      "cruelty_by_husband": 210,
+      "total_crimes_against_women": 1884
+    },
+    {
+      "state": "Sikkim",
+      "rape": 390,
+      "kidnapping": 124,
+      "dowry_deaths": 4,
+      "assault": 460,
+      "cruelty_by_husband": 88,
+      "total_crimes_against_women": 1066
+    },
+    {
+      "state": "A & N Islands",
+      "rape": 218,
+      "kidnapping": 154,
+      "dowry_deaths": 12,
+      "assault": 428,
+      "cruelty_by_husband": 242,
+      "total_crimes_against_women": 1054
+    },
+    {
+      "state": "Nagaland",
+      "rape": 440,
+      "kidnapping": 142,
+      "dowry_deaths": 0,
+      "assault": 192,
+      "cruelty_by_husband": 18,
+      "total_crimes_against_women": 792
+    },
+    {
+      "state": "D & N Haveli",
+      "rape": 112,
+      "kidnapping": 188,
+      "dowry_deaths": 2,
+      "assault": 100,
+      "cruelty_by_husband": 76,
+      "total_crimes_against_women": 478
+    },
+    {
+      "state": "Daman & Diu",
+      "rape": 40,
+      "kidnapping": 30,
+      "dowry_deaths": 6,
+      "assault": 30,
+      "cruelty_by_husband": 70,
+      "total_crimes_against_women": 176
+    },
+    {
+      "state": "Lakshadweep",
+      "rape": 14,
+      "kidnapping": 2,
+      "dowry_deaths": 0,
+      "assault": 10,
+      "cruelty_by_husband": 14,
+      "total_crimes_against_women": 40
+    }
+  ]
+}
