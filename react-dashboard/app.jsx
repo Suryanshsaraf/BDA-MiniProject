@@ -4,13 +4,28 @@ const { useState, useEffect, useRef } = React;
 // REGIONAL DEFINITIONS & GEOGRAPHIC CENTROIDS
 // -----------------------------------------------------------------------------
 const REGION_BOUNDS = {
-  "All India": { center: [22.5937, 78.9629], zoom: 5 },
-  "Northern": { center: [29.5, 77.0], zoom: 6 },
-  "Western": { center: [21.5, 73.5], zoom: 6 },
-  "Central": { center: [22.5, 80.0], zoom: 6 },
-  "Southern": { center: [13.5, 77.5], zoom: 6 },
-  "Eastern": { center: [23.5, 86.0], zoom: 6 },
-  "North-Eastern": { center: [26.0, 93.0], zoom: 6.5 }
+  "All India": { bounds: [[8.0, 68.0], [36.0, 97.5]], center: [22.5, 80.0], zoom: 4.8 },
+  "Northern": { bounds: [[25.0, 73.0], [36.0, 81.5]], center: [30.5, 77.0], zoom: 6 },
+  "Western": { bounds: [[15.0, 68.0], [25.0, 77.5]], center: [20.0, 73.0], zoom: 6 },
+  "Central": { bounds: [[17.5, 74.0], [27.0, 84.5]], center: [22.5, 79.5], zoom: 6 },
+  "Southern": { bounds: [[8.0, 74.0], [20.0, 84.5]], center: [14.0, 78.5], zoom: 6 },
+  "Eastern": { bounds: [[19.0, 81.0], [27.5, 89.5]], center: [23.5, 85.5], zoom: 6 },
+  "North-Eastern": { bounds: [[21.5, 89.5], [29.5, 97.5]], center: [25.5, 93.5], zoom: 6.5 }
+};
+
+const STATE_NAME_ALIASES = {
+  "ANDAMAN AND NICOBAR": "ANDAMAN & NICOBAR ISLANDS",
+  "DADRA AND NAGAR HAVELI": "DADRA & NAGAR HAVELI",
+  "DAMAN AND DIU": "DAMAN & DIU",
+  "JAMMU AND KASHMIR": "JAMMU & KASHMIR",
+  "ORISSA": "ODISHA",
+  "UTTARANCHAL": "UTTARAKHAND"
+};
+
+const resolveStateKey = (name) => {
+  if (!name) return "";
+  const upper = name.trim().toUpperCase();
+  return STATE_NAME_ALIASES[upper] || upper;
 };
 
 const BASEMAP_TILES = {
@@ -188,33 +203,62 @@ function GISMapView({
 
   const regionNames = ["All India", "Northern", "Western", "Central", "Southern", "Eastern", "North-Eastern"];
 
-  // Helper color scale for metrics
+  // Helper color scale for metrics (vivid, high-contrast palette)
   const getColor = (value, metric) => {
     if (metric === "violent_pct") {
-      return value > 25 ? '#7f1d1d' : value > 20 ? '#b91c1c' : value > 15 ? '#ea580c' : value > 10 ? '#d97706' : '#15803d';
+      return value > 25 ? '#991b1b' : value > 20 ? '#dc2626' : value > 15 ? '#ea580c' : value > 10 ? '#3b82f6' : '#10b981';
     }
     if (metric === "women_crimes") {
-      return value > 250000 ? '#581c87' : value > 150000 ? '#7e22ce' : value > 80000 ? '#9333ea' : value > 30000 ? '#c084fc' : '#1e293b';
+      return value > 120000 ? '#701a75' : value > 70000 ? '#a21caf' : value > 30000 ? '#c026d3' : value > 10000 ? '#38bdf8' : '#10b981';
     }
-    // Total crimes
-    return value > 3000000 ? '#881337' : value > 2000000 ? '#be123c' : value > 1000000 ? '#e11d48' : value > 500000 ? '#fb7185' : '#334155';
+    // Total crimes (NCRB authentic distribution)
+    return value > 1800000 ? '#991b1b' : value > 1000000 ? '#dc2626' : value > 500000 ? '#ea580c' : value > 150000 ? '#3b82f6' : '#10b981';
   };
 
-  // Initialize and Update Leaflet Map
+  // 1. Initialize Leaflet Map once
   useEffect(() => {
     if (!mapRef.current) return;
 
     if (!mapInstanceRef.current) {
       const map = L.map(mapRef.current, {
-        center: REGION_BOUNDS["All India"].center,
-        zoom: REGION_BOUNDS["All India"].zoom,
-        zoomControl: false
+        center: [22.5, 80.0],
+        zoom: 4.8,
+        zoomControl: false,
+        preferCanvas: false
       });
       L.control.zoom({ position: 'bottomright' }).addTo(map);
       mapInstanceRef.current = map;
-    }
 
+      // Handle resize events to guarantee map fills 100% of container
+      const handleResize = () => {
+        if (mapInstanceRef.current) {
+          mapInstanceRef.current.invalidateSize({ animate: false });
+        }
+      };
+      window.addEventListener('resize', handleResize);
+
+      // Multiple fallback timeouts for layout settling
+      setTimeout(handleResize, 50);
+      setTimeout(handleResize, 150);
+      setTimeout(handleResize, 350);
+      setTimeout(handleResize, 700);
+
+      if (window.ResizeObserver) {
+        const ro = new ResizeObserver(() => {
+          handleResize();
+        });
+        ro.observe(mapRef.current);
+      }
+    }
+  }, []);
+
+  // 2. Update Layers, Basemap, Choropleths, and Markers
+  useEffect(() => {
     const map = mapInstanceRef.current;
+    if (!map) return;
+
+    // Force size recalculation so viewport always fills container
+    map.invalidateSize({ animate: false });
 
     // Basemap Update
     if (tileLayerRef.current) {
@@ -222,13 +266,10 @@ function GISMapView({
     }
     const tileUrl = BASEMAP_TILES[activeBasemap] || BASEMAP_TILES["ArcGIS Dark"];
     tileLayerRef.current = L.tileLayer(tileUrl, {
-      attribution: '&copy; Esri &copy; OpenStreetMap contributors',
-      maxZoom: 18
+      attribution: '&copy; Esri, OpenStreetMap contributors',
+      maxZoom: 18,
+      minZoom: 3
     }).addTo(map);
-
-    // Update Region Camera Position
-    const bounds = REGION_BOUNDS[selectedRegion] || REGION_BOUNDS["All India"];
-    map.flyTo(bounds.center, bounds.zoom, { duration: 1.2 });
 
     // GeoJSON State Choropleth Layer
     if (geoJsonLayerRef.current) {
@@ -242,33 +283,37 @@ function GISMapView({
       geoJsonLayerRef.current = L.geoJSON(geoJsonData, {
         style: (feature) => {
           const sName = feature.properties.NAME_1 || "";
-          const stat = stateMap[sName.toUpperCase()] || { total_crimes: 0, violent_pct: 0, women_crimes: 0 };
-          const reg = regMap[sName] || "Other";
+          const normKey = resolveStateKey(sName);
+          const stat = stateMap[normKey] || { total_crimes: 0, violent_pct: 0, women_crimes: 0 };
+          const reg = regMap[sName] || regMap[normKey] || "Other";
 
           const isSelectedRegion = selectedRegion === "All India" || reg === selectedRegion;
           const val = stat[selectedMetric] || 0;
 
           return {
             fillColor: isSelectedRegion ? getColor(val, selectedMetric) : '#1e293b',
-            weight: isSelectedRegion ? 1.5 : 0.8,
-            opacity: 0.9,
-            color: isSelectedRegion ? '#ffffff' : '#334155',
-            fillOpacity: isSelectedRegion ? 0.75 : 0.25
+            weight: isSelectedRegion ? 1.8 : 0.8,
+            opacity: 1.0,
+            color: isSelectedRegion ? '#ffffff' : '#475569',
+            fillOpacity: isSelectedRegion ? 0.78 : 0.20
           };
         },
         onEachFeature: (feature, layer) => {
           const sName = feature.properties.NAME_1 || "";
-          const stat = stateMap[sName.toUpperCase()] || { total_crimes: 0, violent_pct: 0, women_crimes: 0, violent_crimes: 0, property_crimes: 0 };
-          const reg = regMap[sName] || "Other";
+          const normKey = resolveStateKey(sName);
+          const stat = stateMap[normKey] || { total_crimes: 0, violent_pct: 0, women_crimes: 0, violent_crimes: 0, property_crimes: 0 };
+          const reg = regMap[sName] || regMap[normKey] || "Other";
 
           layer.on({
             mouseover: (e) => {
               const l = e.target;
-              l.setStyle({ weight: 3, color: '#6366f1', fillOpacity: 0.9 });
+              l.setStyle({ weight: 3, color: '#6366f1', fillOpacity: 0.95 });
               l.bringToFront();
             },
             mouseout: (e) => {
-              geoJsonLayerRef.current.resetStyle(e.target);
+              if (geoJsonLayerRef.current) {
+                geoJsonLayerRef.current.resetStyle(e.target);
+              }
             },
             click: () => {
               setSelectedState({ name: sName, region: reg, ...stat });
@@ -276,15 +321,42 @@ function GISMapView({
           });
 
           layer.bindTooltip(`
-            <div class="p-1 text-xs">
-              <strong class="text-sm font-bold">${sName}</strong> (${reg} Region)<br/>
-              <b>Total Crimes:</b> ${stat.total_crimes?.toLocaleString() || 'N/A'}<br/>
-              <b>Violent Crimes:</b> ${stat.violent_crimes?.toLocaleString() || 'N/A'} (${stat.violent_pct || 0}%)<br/>
-              <b>Crimes Against Women:</b> ${stat.women_crimes?.toLocaleString() || 'N/A'}
+            <div style="font-family: 'Plus Jakarta Sans', sans-serif; padding: 4px; font-size: 12px; color: #f8fafc;">
+              <div style="font-size: 13px; font-weight: 800; color: #818cf8; margin-bottom: 2px;">${sName}</div>
+              <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">${reg} Region</div>
+              <div><b>Total IPC:</b> ${(stat.total_crimes || 0).toLocaleString()}</div>
+              <div><b>Violent Ratio:</b> ${stat.violent_pct || 0}%</div>
+              <div><b>Crimes Against Women:</b> ${(stat.women_crimes || 0).toLocaleString()}</div>
             </div>
-          `, { sticky: true });
+          `, { sticky: true, className: 'leaflet-custom-tooltip' });
         }
       }).addTo(map);
+
+      // Camera Position / Zoom to Region or All India
+      if (selectedRegion === "All India") {
+        if (geoJsonLayerRef.current.getBounds().isValid()) {
+          map.fitBounds(geoJsonLayerRef.current.getBounds(), { padding: [25, 25] });
+        }
+      } else {
+        // Collect bounds of states in selected region
+        const regionFeatures = geoJsonData.features.filter(f => {
+          const sName = f.properties.NAME_1 || "";
+          const normKey = resolveStateKey(sName);
+          const reg = regMap[sName] || regMap[normKey] || "Other";
+          return reg === selectedRegion;
+        });
+        if (regionFeatures.length > 0) {
+          const tempLayer = L.geoJSON({ type: "FeatureCollection", features: regionFeatures });
+          if (tempLayer.getBounds().isValid()) {
+            map.fitBounds(tempLayer.getBounds(), { padding: [35, 35] });
+          }
+        } else {
+          const regBounds = REGION_BOUNDS[selectedRegion];
+          if (regBounds && regBounds.bounds) {
+            map.fitBounds(regBounds.bounds, { padding: [35, 35] });
+          }
+        }
+      }
     }
 
     // Top 50 Hotspot Danger Corridors Layer
@@ -295,7 +367,6 @@ function GISMapView({
     if (showHotspots && hotspotsData && hotspotsData.top_50_hotspots) {
       const markers = L.layerGroup();
       hotspotsData.top_50_hotspots.forEach(h => {
-        // Filter by region if not All India
         const reg = regionsData?.region_map[h.state] || "";
         if (selectedRegion !== "All India" && reg !== selectedRegion) return;
 
@@ -303,21 +374,21 @@ function GISMapView({
         const color = isCritical ? "#ef4444" : "#f59e0b";
 
         const marker = L.circleMarker([h.lat, h.lon], {
-          radius: Math.min(Math.max(h.total_crimes / 22000, 6), 16),
+          radius: Math.min(Math.max(h.total_crimes / 25000, 7), 16),
           fillColor: color,
           color: "#ffffff",
-          weight: 1.5,
+          weight: 2,
           opacity: 1,
-          fillOpacity: 0.85
+          fillOpacity: 0.9
         });
 
         marker.bindPopup(`
-          <div style="min-width: 190px;">
-            <div style="font-weight: 800; font-size: 14px; color: ${color}; margin-bottom: 4px;">
+          <div style="min-width: 200px; font-family: 'Plus Jakarta Sans', sans-serif;">
+            <div style="font-weight: 800; font-size: 14px; color: ${color}; margin-bottom: 3px;">
               ${h.district}
             </div>
-            <div style="font-size: 11px; color: #94a3b8; margin-bottom: 8px;">State: ${h.state}</div>
-            <div style="font-size: 12px; line-height: 1.5;">
+            <div style="font-size: 11px; color: #94a3b8; margin-bottom: 6px;">State: ${h.state}</div>
+            <div style="font-size: 12px; line-height: 1.55;">
               <b>Total IPC:</b> ${h.total_crimes.toLocaleString()}<br/>
               <b>Violent Crimes:</b> ${h.violent_crimes.toLocaleString()} (${h.violent_percentage}%)<br/>
               <b>Women Safety Impact:</b> ${h.women_crimes.toLocaleString()} (${h.women_crime_pct}%)<br/>
@@ -331,7 +402,6 @@ function GISMapView({
       });
       markersLayerRef.current = markers.addTo(map);
     }
-
   }, [geoJsonData, regionsData, hotspotsData, selectedRegion, selectedMetric, activeBasemap, showHotspots]);
 
   // Selected Region Metadata
@@ -442,26 +512,30 @@ function GISMapView({
       {/* Main Map Container & Right Sidebar */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 flex-grow">
         {/* Leaflet / ArcGIS Map View */}
-        <div className="lg:col-span-3 bg-navy-950 rounded-2xl border border-slate-700/70 overflow-hidden relative shadow-2xl min-h-[560px] flex flex-col">
-          <div ref={mapRef} className="w-full h-full flex-grow min-h-[560px]"></div>
+        <div className="lg:col-span-3 bg-navy-950 rounded-2xl border border-slate-700/70 overflow-hidden relative shadow-2xl flex flex-col" style={{ height: "650px", minHeight: "650px" }}>
+          <div ref={mapRef} style={{ width: "100%", height: "650px", minHeight: "650px" }} className="w-full h-full relative z-0"></div>
 
           {/* Map Legend Overlay */}
           <div className="absolute bottom-4 left-4 z-[400] bg-navy-900/90 backdrop-blur-md p-3 rounded-xl border border-slate-700/80 text-xs space-y-1.5 shadow-lg max-w-[220px]">
             <div className="font-bold text-slate-200">Choropleth Intensity</div>
             <div className="flex items-center gap-1.5">
-              <span className="w-3.5 h-3.5 rounded-sm" style={{ backgroundColor: '#881337' }}></span>
+              <span className="w-3.5 h-3.5 rounded-sm" style={{ backgroundColor: '#991b1b' }}></span>
               <span className="text-slate-300">Extreme Crime Volume</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="w-3.5 h-3.5 rounded-sm" style={{ backgroundColor: '#e11d48' }}></span>
+              <span className="w-3.5 h-3.5 rounded-sm" style={{ backgroundColor: '#dc2626' }}></span>
               <span className="text-slate-300">High Crime Volume</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="w-3.5 h-3.5 rounded-sm" style={{ backgroundColor: '#fb7185' }}></span>
+              <span className="w-3.5 h-3.5 rounded-sm" style={{ backgroundColor: '#ea580c' }}></span>
+              <span className="text-slate-300">Significant Volume</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-3.5 h-3.5 rounded-sm" style={{ backgroundColor: '#3b82f6' }}></span>
               <span className="text-slate-300">Moderate Volume</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="w-3.5 h-3.5 rounded-sm" style={{ backgroundColor: '#334155' }}></span>
+              <span className="w-3.5 h-3.5 rounded-sm" style={{ backgroundColor: '#10b981' }}></span>
               <span className="text-slate-400">Low / Controlled</span>
             </div>
             <hr className="border-slate-700/60 my-1"/>
