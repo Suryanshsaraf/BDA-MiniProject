@@ -14,10 +14,10 @@ const REGION_BOUNDS = {
 };
 
 const BASEMAP_TILES = {
-  "Dark Canvas": "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
-  "OpenStreetMap": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-  "Positron Light": "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-  "Carto Voyager": "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+  "ArcGIS Dark": "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+  "OpenStreetMap": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+  "ArcGIS Satellite": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+  "ArcGIS Street": "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}"
 };
 
 // -----------------------------------------------------------------------------
@@ -27,7 +27,7 @@ function App() {
   const [activeTab, setActiveTab] = useState("map");
   const [selectedRegion, setSelectedRegion] = useState("All India");
   const [selectedMetric, setSelectedMetric] = useState("total_crimes");
-  const [activeBasemap, setActiveBasemap] = useState("Dark Canvas");
+  const [activeBasemap, setActiveBasemap] = useState("ArcGIS Dark");
   const [showHotspots, setShowHotspots] = useState(true);
   
   // Data States
@@ -220,11 +220,10 @@ function GISMapView({
     if (tileLayerRef.current) {
       map.removeLayer(tileLayerRef.current);
     }
-    const tileUrl = BASEMAP_TILES[activeBasemap] || BASEMAP_TILES["Dark Canvas"];
+    const tileUrl = BASEMAP_TILES[activeBasemap] || BASEMAP_TILES["ArcGIS Dark"];
     tileLayerRef.current = L.tileLayer(tileUrl, {
-      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-      subdomains: 'abcd',
-      maxZoom: 19
+      attribution: '&copy; Esri &copy; OpenStreetMap contributors',
+      maxZoom: 18
     }).addTo(map);
 
     // Update Region Camera Position
@@ -395,10 +394,10 @@ function GISMapView({
               onChange={e => setActiveBasemap(e.target.value)}
               className="bg-navy-950 border border-slate-700 text-slate-200 text-xs rounded-lg px-2.5 py-1.5 focus:ring-1 focus:ring-brand-primary outline-none"
             >
-              <option value="Dark Canvas">Carto Dark GIS (Free)</option>
-              <option value="OpenStreetMap">OpenStreetMap (Free)</option>
-              <option value="Positron Light">Carto Light (Free)</option>
-              <option value="Carto Voyager">Carto Voyager (Free)</option>
+              <option value="ArcGIS Dark">ArcGIS Dark Canvas (No Key)</option>
+              <option value="OpenStreetMap">OpenStreetMap Standard (No Key)</option>
+              <option value="ArcGIS Satellite">ArcGIS Satellite (No Key)</option>
+              <option value="ArcGIS Street">ArcGIS Street Map (No Key)</option>
             </select>
           </div>
 
