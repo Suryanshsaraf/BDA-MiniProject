@@ -1,0 +1,100 @@
+{
+  "model_type": "correlation_heuristic",
+  "feature_cols": [
+    "DISTRICT_RISK_SCORE",
+    "CRIME_RATE_PER_100K",
+    "POPULATION_DENSITY",
+    "LITERACY_RATE",
+    "URBAN_PERCENTAGE",
+    "POLICE_PER_LAKH",
+    "CHARGESHEET_RATE",
+    "VIOLENT_CRIME_RATIO",
+    "PROPERTY_CRIME_RATIO",
+    "WOMEN_CRIME_RATIO",
+    "ECONOMIC_CRIME_RATIO",
+    "YEAR"
+  ],
+  "importances": [
+    0.3486,
+    0.2648,
+    0.0932,
+    0.0504,
+    0.1108,
+    0.0597,
+    0.0024,
+    0.0347,
+    0.0011,
+    0.0224,
+    0.011,
+    0.001
+  ],
+  "metrics": {
+    "accuracy": 0.7653,
+    "auc_roc": 0.9412,
+    "precision": 1.0,
+    "recall": 0.0994,
+    "f1_score": 0.1808,
+    "confusion_matrix": {
+      "true_positive": 94,
+      "false_positive": 0,
+      "true_negative": 2684,
+      "false_negative": 852
+    },
+    "feature_importances": [
+      {
+        "feature": "DISTRICT_RISK_SCORE",
+        "importance": 0.3486
+      },
+      {
+        "feature": "CRIME_RATE_PER_100K",
+        "importance": 0.2648
+      },
+      {
+        "feature": "POPULATION_DENSITY",
+        "importance": 0.0932
+      },
+      {
+        "feature": "LITERACY_RATE",
+        "importance": 0.0504
+      },
+      {
+        "feature": "URBAN_PERCENTAGE",
+        "importance": 0.1108
+      },
+      {
+        "feature": "POLICE_PER_LAKH",
+        "importance": 0.0597
+      },
+      {
+        "feature": "CHARGESHEET_RATE",
+        "importance": 0.0024
+      },
+      {
+        "feature": "VIOLENT_CRIME_RATIO",
+        "importance": 0.0347
+      },
+      {
+        "feature": "PROPERTY_CRIME_RATIO",
+        "importance": 0.0011
+      },
+      {
+        "feature": "WOMEN_CRIME_RATIO",
+        "importance": 0.0224
+      },
+      {
+        "feature": "ECONOMIC_CRIME_RATIO",
+        "importance": 0.011
+      },
+      {
+        "feature": "YEAR",
+        "importance": 0.001
+      }
+    ],
+    "hyperparameters": {
+      "num_trees": 100,
+      "max_depth": 10,
+      "train_size": 14516,
+      "test_size": 3630
+    }
+  }
+}

@@ -1,0 +1,239 @@
+{
+  "k": 15,
+  "clusters": [
+    {
+      "cluster_id": 3,
+      "center_lat": 11.1819,
+      "center_lon": 77.7809,
+      "total_crimes": 10476281,
+      "distinct_districts": 92,
+      "dominant_states": [
+        "Andhra Pradesh",
+        "Kerala",
+        "Tamil Nadu"
+      ]
+    },
+    {
+      "cluster_id": 4,
+      "center_lat": 17.7657,
+      "center_lon": 75.5806,
+      "total_crimes": 8605907,
+      "distinct_districts": 102,
+      "dominant_states": [
+        "Goa",
+        "Karnataka",
+        "Bihar"
+      ]
+    },
+    {
+      "cluster_id": 0,
+      "center_lat": 29.6079,
+      "center_lon": 76.8261,
+      "total_crimes": 8430839,
+      "distinct_districts": 166,
+      "dominant_states": [
+        "Sikkim",
+        "Andaman & Nicobar Islands",
+        "Tripura"
+      ]
+    },
+    {
+      "cluster_id": 12,
+      "center_lat": 22.7162,
+      "center_lon": 78.5285,
+      "total_crimes": 5590530,
+      "distinct_districts": 82,
+      "dominant_states": [
+        "Andaman & Nicobar Islands",
+        "Dadra & Nagar Haveli",
+        "Delhi"
+      ]
+    },
+    {
+      "cluster_id": 13,
+      "center_lat": 16.2509,
+      "center_lon": 79.7046,
+      "total_crimes": 5363906,
+      "distinct_districts": 36,
+      "dominant_states": [
+        "Telangana",
+        "Andhra Pradesh",
+        "Tamil Nadu"
+      ]
+    },
+    {
+      "cluster_id": 9,
+      "center_lat": 26.8798,
+      "center_lon": 80.8953,
+      "total_crimes": 4227425,
+      "distinct_districts": 80,
+      "dominant_states": [
+        "Madhya Pradesh",
+        "Uttar Pradesh"
+      ]
+    },
+    {
+      "cluster_id": 10,
+      "center_lat": 26.7627,
+      "center_lon": 74.2764,
+      "total_crimes": 4131411,
+      "distinct_districts": 45,
+      "dominant_states": [
+        "Rajasthan"
+      ]
+    },
+    {
+      "cluster_id": 2,
+      "center_lat": 25.2935,
+      "center_lon": 85.4789,
+      "total_crimes": 3609377,
+      "distinct_districts": 55,
+      "dominant_states": [
+        "Sikkim",
+        "Bihar",
+        "West Bengal"
+      ]
+    },
+    {
+      "cluster_id": 6,
+      "center_lat": 22.1518,
+      "center_lon": 71.5475,
+      "total_crimes": 3599626,
+      "distinct_districts": 55,
+      "dominant_states": [
+        "Dadra & Nagar Haveli",
+        "Arunachal Pradesh",
+        "Jammu & Kashmir"
+      ]
+    },
+    {
+      "cluster_id": 7,
+      "center_lat": 22.9119,
+      "center_lon": 87.9458,
+      "total_crimes": 3351670,
+      "distinct_districts": 40,
+      "dominant_states": [
+        "West Bengal"
+      ]
+    },
+    {
+      "cluster_id": 1,
+      "center_lat": 20.9422,
+      "center_lon": 83.7148,
+      "total_crimes": 3093797,
+      "distinct_districts": 76,
+      "dominant_states": [
+        "Chhattisgarh",
+        "Andhra Pradesh",
+        "Odisha"
+      ]
+    },
+    {
+      "cluster_id": 8,
+      "center_lat": 26.5968,
+      "center_lon": 93.6353,
+      "total_crimes": 1796251,
+      "distinct_districts": 69,
+      "dominant_states": [
+        "Nagaland",
+        "Arunachal Pradesh",
+        "Meghalaya"
+      ]
+    },
+    {
+      "cluster_id": 14,
+      "center_lat": 23.5755,
+      "center_lon": 85.2452,
+      "total_crimes": 954970,
+      "distinct_districts": 28,
+      "dominant_states": [
+        "Jharkhand"
+      ]
+    },
+    {
+      "cluster_id": 5,
+      "center_lat": 33.6508,
+      "center_lon": 76.4789,
+      "total_crimes": 602224,
+      "distinct_districts": 37,
+      "dominant_states": [
+        "Punjab",
+        "Jammu & Kashmir"
+      ]
+    },
+    {
+      "cluster_id": 11,
+      "center_lat": 23.1823,
+      "center_lon": 92.9486,
+      "total_crimes": 159168,
+      "distinct_districts": 31,
+      "dominant_states": [
+        "Mizoram",
+        "Andaman & Nicobar Islands",
+        "Tripura"
+      ]
+    }
+  ],
+  "centroids": [
+    {
+      "lat": 29.6079,
+      "lon": 76.8261
+    },
+    {
+      "lat": 20.9422,
+      "lon": 83.7148
+    },
+    {
+      "lat": 25.2935,
+      "lon": 85.4789
+    },
+    {
+      "lat": 11.1819,
+      "lon": 77.7809
+    },
+    {
+      "lat": 17.7657,
+      "lon": 75.5806
+    },
+    {
+      "lat": 33.6508,
+      "lon": 76.4789
+    },
+    {
+      "lat": 22.1518,
+      "lon": 71.5475
+    },
+    {
+      "lat": 22.9119,
+      "lon": 87.9458
+    },
+    {
+      "lat": 26.5968,
+      "lon": 93.6353
+    },
+    {
+      "lat": 26.8798,
+      "lon": 80.8953
+    },
+    {
+      "lat": 26.7627,
+      "lon": 74.2764
+    },
+    {
+      "lat": 23.1823,
+      "lon": 92.9486
+    },
+    {
+      "lat": 22.7162,
+      "lon": 78.5285
+    },
+    {
+      "lat": 16.2509,
+      "lon": 79.7046
+    },
+    {
+      "lat": 23.5755,
+      "lon": 85.2452
+    }
+  ]
+}

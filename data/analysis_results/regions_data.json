@@ -1,0 +1,452 @@
+{
+  "regions": {
+    "Central": {
+      "region": "Central",
+      "total_crimes": 6935668,
+      "violent_crimes": 1635129,
+      "property_crimes": 2187170,
+      "women_crimes": 762876,
+      "states_count": 2
+    },
+    "Western": {
+      "region": "Western",
+      "total_crimes": 14143722,
+      "violent_crimes": 3160729,
+      "property_crimes": 5399270,
+      "women_crimes": 1521846,
+      "states_count": 6
+    },
+    "Southern": {
+      "region": "Southern",
+      "total_crimes": 19034014,
+      "violent_crimes": 4560055,
+      "property_crimes": 5811175,
+      "women_crimes": 1934160,
+      "states_count": 7
+    },
+    "Northern": {
+      "region": "Northern",
+      "total_crimes": 11661103,
+      "violent_crimes": 2707899,
+      "property_crimes": 4691249,
+      "women_crimes": 1305285,
+      "states_count": 8
+    },
+    "Eastern": {
+      "region": "Eastern",
+      "total_crimes": 10035638,
+      "violent_crimes": 2551825,
+      "property_crimes": 3341994,
+      "women_crimes": 1239033,
+      "states_count": 5
+    },
+    "North-Eastern": {
+      "region": "North-Eastern",
+      "total_crimes": 2183237,
+      "violent_crimes": 575149,
+      "property_crimes": 788455,
+      "women_crimes": 306453,
+      "states_count": 8
+    }
+  },
+  "states": {
+    "MADHYA PRADESH": {
+      "state": "Madhya Pradesh",
+      "region": "Central",
+      "total_crimes": 5644871,
+      "violent_crimes": 1325687,
+      "property_crimes": 1766578,
+      "women_crimes": 614092,
+      "violent_pct": 23.5
+    },
+    "MAHARASHTRA": {
+      "state": "Maharashtra",
+      "region": "Western",
+      "total_crimes": 5631946,
+      "violent_crimes": 1309053,
+      "property_crimes": 2551610,
+      "women_crimes": 581315,
+      "violent_pct": 23.2
+    },
+    "TAMIL NADU": {
+      "state": "Tamil Nadu",
+      "region": "Southern",
+      "total_crimes": 5074972,
+      "violent_crimes": 1097825,
+      "property_crimes": 1408491,
+      "women_crimes": 416237,
+      "violent_pct": 21.6
+    },
+    "UTTAR PRADESH": {
+      "state": "Uttar Pradesh",
+      "region": "Northern",
+      "total_crimes": 4791372,
+      "violent_crimes": 1181918,
+      "property_crimes": 1756163,
+      "women_crimes": 553155,
+      "violent_pct": 24.7
+    },
+    "RAJASTHAN": {
+      "state": "Rajasthan",
+      "region": "Western",
+      "total_crimes": 4618014,
+      "violent_crimes": 1041419,
+      "property_crimes": 1495070,
+      "women_crimes": 548875,
+      "violent_pct": 22.6
+    },
+    "ANDHRA PRADESH": {
+      "state": "Andhra Pradesh",
+      "region": "Southern",
+      "total_crimes": 4542976,
+      "violent_crimes": 1295058,
+      "property_crimes": 1555886,
+      "women_crimes": 539233,
+      "violent_pct": 28.5
+    },
+    "KERALA": {
+      "state": "Kerala",
+      "region": "Southern",
+      "total_crimes": 4323526,
+      "violent_crimes": 955133,
+      "property_crimes": 1079991,
+      "women_crimes": 454360,
+      "violent_pct": 22.1
+    },
+    "WEST BENGAL": {
+      "state": "West Bengal",
+      "region": "Eastern",
+      "total_crimes": 4013018,
+      "violent_crimes": 961968,
+      "property_crimes": 1383960,
+      "women_crimes": 603399,
+      "violent_pct": 24.0
+    },
+    "KARNATAKA": {
+      "state": "Karnataka",
+      "region": "Southern",
+      "total_crimes": 3857939,
+      "violent_crimes": 918625,
+      "property_crimes": 1327612,
+      "women_crimes": 367706,
+      "violent_pct": 23.8
+    },
+    "GUJARAT": {
+      "state": "Gujarat",
+      "region": "Western",
+      "total_crimes": 3793763,
+      "violent_crimes": 790506,
+      "property_crimes": 1305140,
+      "women_crimes": 382551,
+      "violent_pct": 20.8
+    },
+    "BIHAR": {
+      "state": "Bihar",
+      "region": "Eastern",
+      "total_crimes": 3481762,
+      "violent_crimes": 959278,
+      "property_crimes": 1079937,
+      "women_crimes": 325013,
+      "violent_pct": 27.6
+    },
+    "DELHI": {
+      "state": "Delhi",
+      "region": "Northern",
+      "total_crimes": 3142836,
+      "violent_crimes": 697215,
+      "property_crimes": 1505007,
+      "women_crimes": 349400,
+      "violent_pct": 22.2
+    },
+    "ASSAM": {
+      "state": "Assam",
+      "region": "North-Eastern",
+      "total_crimes": 1693359,
+      "violent_crimes": 443200,
+      "property_crimes": 592820,
+      "women_crimes": 242316,
+      "violent_pct": 26.2
+    },
+    "HARYANA": {
+      "state": "Haryana",
+      "region": "Northern",
+      "total_crimes": 1635172,
+      "violent_crimes": 351587,
+      "property_crimes": 721072,
+      "women_crimes": 181151,
+      "violent_pct": 21.5
+    },
+    "ODISHA": {
+      "state": "Odisha",
+      "region": "Eastern",
+      "total_crimes": 1548208,
+      "violent_crimes": 383859,
+      "property_crimes": 517651,
+      "women_crimes": 204432,
+      "violent_pct": 24.8
+    },
+    "CHHATTISGARH": {
+      "state": "Chhattisgarh",
+      "region": "Central",
+      "total_crimes": 1290797,
+      "violent_crimes": 309442,
+      "property_crimes": 420592,
+      "women_crimes": 148784,
+      "violent_pct": 24.0
+    },
+    "TELANGANA": {
+      "state": "Telangana",
+      "region": "Southern",
+      "total_crimes": 1095838,
+      "violent_crimes": 260753,
+      "property_crimes": 393141,
+      "women_crimes": 145350,
+      "violent_pct": 23.8
+    },
+    "JHARKHAND": {
+      "state": "Jharkhand",
+      "region": "Eastern",
+      "total_crimes": 954970,
+      "violent_crimes": 237898,
+      "property_crimes": 347070,
+      "women_crimes": 101943,
+      "violent_pct": 24.9
+    },
+    "PUNJAB": {
+      "state": "Punjab",
+      "region": "Northern",
+      "total_crimes": 920346,
+      "violent_crimes": 236613,
+      "property_crimes": 319559,
+      "women_crimes": 101275,
+      "violent_pct": 25.7
+    },
+    "JAMMU & KASHMIR": {
+      "state": "Jammu & Kashmir",
+      "region": "Northern",
+      "total_crimes": 542609,
+      "violent_crimes": 108635,
+      "property_crimes": 161125,
+      "women_crimes": 57033,
+      "violent_pct": 20.0
+    },
+    "HIMACHAL PRADESH": {
+      "state": "Himachal Pradesh",
+      "region": "Northern",
+      "total_crimes": 329909,
+      "violent_crimes": 64419,
+      "property_crimes": 86949,
+      "women_crimes": 32956,
+      "violent_pct": 19.5
+    },
+    "UTTARAKHAND": {
+      "state": "Uttarakhand",
+      "region": "Northern",
+      "total_crimes": 209744,
+      "violent_crimes": 53568,
+      "property_crimes": 84220,
+      "women_crimes": 23543,
+      "violent_pct": 25.5
+    },
+    "PUDUCHERRY": {
+      "state": "Puducherry",
+      "region": "Southern",
+      "total_crimes": 137203,
+      "violent_crimes": 32412,
+      "property_crimes": 45480,
+      "women_crimes": 11156,
+      "violent_pct": 23.6
+    },
+    "TRIPURA": {
+      "state": "Tripura",
+      "region": "North-Eastern",
+      "total_crimes": 123210,
+      "violent_crimes": 35863,
+      "property_crimes": 35116,
+      "women_crimes": 25227,
+      "violent_pct": 29.1
+    },
+    "MANIPUR": {
+      "state": "Manipur",
+      "region": "North-Eastern",
+      "total_crimes": 101177,
+      "violent_crimes": 31031,
+      "property_crimes": 35329,
+      "women_crimes": 9872,
+      "violent_pct": 30.7
+    },
+    "CHANDIGARH": {
+      "state": "Chandigarh",
+      "region": "Northern",
+      "total_crimes": 89115,
+      "violent_crimes": 13944,
+      "property_crimes": 57154,
+      "women_crimes": 6772,
+      "violent_pct": 15.6
+    },
+    "GOA": {
+      "state": "Goa",
+      "region": "Western",
+      "total_crimes": 83784,
+      "violent_crimes": 16393,
+      "property_crimes": 40747,
+      "women_crimes": 7759,
+      "violent_pct": 19.6
+    },
+    "ARUNACHAL PRADESH": {
+      "state": "Arunachal Pradesh",
+      "region": "North-Eastern",
+      "total_crimes": 74501,
+      "violent_crimes": 21461,
+      "property_crimes": 30523,
+      "women_crimes": 8054,
+      "violent_pct": 28.8
+    },
+    "MEGHALAYA": {
+      "state": "Meghalaya",
+      "region": "North-Eastern",
+      "total_crimes": 71362,
+      "violent_crimes": 19359,
+      "property_crimes": 30834,
+      "women_crimes": 8746,
+      "violent_pct": 27.1
+    },
+    "MIZORAM": {
+      "state": "Mizoram",
+      "region": "North-Eastern",
+      "total_crimes": 67735,
+      "violent_crimes": 11055,
+      "property_crimes": 40367,
+      "women_crimes": 7240,
+      "violent_pct": 16.3
+    },
+    "ANDAMAN & NICOBAR ISLANDS": {
+      "state": "Andaman & Nicobar Islands",
+      "region": "Eastern",
+      "total_crimes": 37680,
+      "violent_crimes": 8822,
+      "property_crimes": 13376,
+      "women_crimes": 4246,
+      "violent_pct": 23.4
+    },
+    "NAGALAND": {
+      "state": "Nagaland",
+      "region": "North-Eastern",
+      "total_crimes": 29811,
+      "violent_crimes": 8007,
+      "property_crimes": 15007,
+      "women_crimes": 2367,
+      "violent_pct": 26.9
+    },
+    "SIKKIM": {
+      "state": "Sikkim",
+      "region": "North-Eastern",
+      "total_crimes": 22082,
+      "violent_crimes": 5173,
+      "property_crimes": 8459,
+      "women_crimes": 2631,
+      "violent_pct": 23.4
+    },
+    "DADRA & NAGAR HAVELI": {
+      "state": "Dadra & Nagar Haveli",
+      "region": "Western",
+      "total_crimes": 10702,
+      "violent_crimes": 2318,
+      "property_crimes": 4105,
+      "women_crimes": 974,
+      "violent_pct": 21.7
+    },
+    "DAMAN & DIU": {
+      "state": "Daman & Diu",
+      "region": "Western",
+      "total_crimes": 5513,
+      "violent_crimes": 1040,
+      "property_crimes": 2598,
+      "women_crimes": 372,
+      "violent_pct": 18.9
+    },
+    "LAKSHADWEEP": {
+      "state": "Lakshadweep",
+      "region": "Southern",
+      "total_crimes": 1560,
+      "violent_crimes": 249,
+      "property_crimes": 574,
+      "women_crimes": 118,
+      "violent_pct": 16.0
+    }
+  },
+  "region_map": {
+    "ANDHRA PRADESH": "Southern",
+    "Andhra Pradesh": "Southern",
+    "ARUNACHAL PRADESH": "North-Eastern",
+    "Arunachal Pradesh": "North-Eastern",
+    "ASSAM": "North-Eastern",
+    "Assam": "North-Eastern",
+    "BIHAR": "Eastern",
+    "Bihar": "Eastern",
+    "CHHATTISGARH": "Central",
+    "Chhattisgarh": "Central",
+    "GOA": "Western",
+    "Goa": "Western",
+    "GUJARAT": "Western",
+    "Gujarat": "Western",
+    "HARYANA": "Northern",
+    "Haryana": "Northern",
+    "HIMACHAL PRADESH": "Northern",
+    "Himachal Pradesh": "Northern",
+    "JAMMU & KASHMIR": "Northern",
+    "Jammu & Kashmir": "Northern",
+    "JHARKHAND": "Eastern",
+    "Jharkhand": "Eastern",
+    "KARNATAKA": "Southern",
+    "Karnataka": "Southern",
+    "KERALA": "Southern",
+    "Kerala": "Southern",
+    "MADHYA PRADESH": "Central",
+    "Madhya Pradesh": "Central",
+    "MAHARASHTRA": "Western",
+    "Maharashtra": "Western",
+    "MANIPUR": "North-Eastern",
+    "Manipur": "North-Eastern",
+    "MEGHALAYA": "North-Eastern",
+    "Meghalaya": "North-Eastern",
+    "MIZORAM": "North-Eastern",
+    "Mizoram": "North-Eastern",
+    "NAGALAND": "North-Eastern",
+    "Nagaland": "North-Eastern",
+    "ODISHA": "Eastern",
+    "Odisha": "Eastern",
+    "PUNJAB": "Northern",
+    "Punjab": "Northern",
+    "RAJASTHAN": "Western",
+    "Rajasthan": "Western",
+    "SIKKIM": "North-Eastern",
+    "Sikkim": "North-Eastern",
+    "TAMIL NADU": "Southern",
+    "Tamil Nadu": "Southern",
+    "TRIPURA": "North-Eastern",
+    "Tripura": "North-Eastern",
+    "UTTAR PRADESH": "Northern",
+    "Uttar Pradesh": "Northern",
+    "UTTARAKHAND": "Northern",
+    "Uttarakhand": "Northern",
+    "WEST BENGAL": "Eastern",
+    "West Bengal": "Eastern",
+    "ANDAMAN & NICOBAR ISLANDS": "Eastern",
+    "Andaman & Nicobar Islands": "Eastern",
+    "CHANDIGARH": "Northern",
+    "Chandigarh": "Northern",
+    "DADRA & NAGAR HAVELI": "Western",
+    "Dadra & Nagar Haveli": "Western",
+    "DAMAN & DIU": "Western",
+    "Daman & Diu": "Western",
+    "DELHI": "Northern",
+    "Delhi": "Northern",
+    "LAKSHADWEEP": "Southern",
+    "Lakshadweep": "Southern",
+    "PUDUCHERRY": "Southern",
+    "Puducherry": "Southern",
+    "TELANGANA": "Southern",
+    "Telangana": "Southern"
+  }
+}

@@ -1,0 +1,474 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <style>
+            #map { height: 550px; width: 100%; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+            body { margin: 0; padding: 0; }
+        </style>
+    </head>
+    <body>
+        <div id="map"></div>
+        <script>
+            var map = L.map('map').setView([20.5937, 78.9629], 5);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://openstreetmap.org">OSM</a>'
+            }).addTo(map);
+            
+        L.circleMarker([12.9716, 77.5946], {
+            radius: 18,
+            fillColor: '#e74c3c',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Bangalore Commr.</b> (Karnataka)<br>Total Crimes: 386,990<br>Violent: 66,626<br>Risk: CRITICAL");
+        
+        L.circleMarker([18.922, 72.8347], {
+            radius: 16.12735,
+            fillColor: '#e74c3c',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Mumbai Commr.</b> (Maharashtra)<br>Total Crimes: 322,547<br>Violent: 52,881<br>Risk: CRITICAL");
+        
+        L.circleMarker([22.7196, 75.8577], {
+            radius: 12.53195,
+            fillColor: '#e74c3c',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Indore</b> (Madhya Pradesh)<br>Total Crimes: 250,639<br>Violent: 31,904<br>Risk: CRITICAL");
+        
+        L.circleMarker([23.0225, 72.5714], {
+            radius: 11.96315,
+            fillColor: '#e74c3c',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Ahmedabad Commr.</b> (Gujarat)<br>Total Crimes: 239,263<br>Violent: 31,943<br>Risk: CRITICAL");
+        
+        L.circleMarker([17.385, 78.4867], {
+            radius: 11.2737,
+            fillColor: '#e74c3c',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Hyderabad City</b> (Andhra Pradesh)<br>Total Crimes: 225,474<br>Violent: 58,106<br>Risk: CRITICAL");
+        
+        L.circleMarker([22.5726, 88.3639], {
+            radius: 10.5708,
+            fillColor: '#e74c3c',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Kolkata</b> (West Bengal)<br>Total Crimes: 211,416<br>Violent: 33,424<br>Risk: CRITICAL");
+        
+        L.circleMarker([13.0827, 80.2707], {
+            radius: 10.03475,
+            fillColor: '#e74c3c',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Chennai</b> (Tamil Nadu)<br>Total Crimes: 200,695<br>Violent: 20,634<br>Risk: CRITICAL");
+        
+        L.circleMarker([23.2599, 77.4126], {
+            radius: 9.9798,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Bhopal</b> (Madhya Pradesh)<br>Total Crimes: 199,596<br>Violent: 20,482<br>Risk: HIGH");
+        
+        L.circleMarker([25.5941, 85.1376], {
+            radius: 9.44835,
+            fillColor: '#e74c3c',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Patna</b> (Bihar)<br>Total Crimes: 188,967<br>Violent: 42,820<br>Risk: CRITICAL");
+        
+        L.circleMarker([18.5204, 73.8567], {
+            radius: 8.982,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Pune Commr.</b> (Maharashtra)<br>Total Crimes: 179,640<br>Violent: 28,111<br>Risk: HIGH");
+        
+        L.circleMarker([15.7929, 79.62], {
+            radius: 8.08675,
+            fillColor: '#e74c3c',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Cyberabad</b> (Andhra Pradesh)<br>Total Crimes: 161,735<br>Violent: 44,299<br>Risk: CRITICAL");
+        
+        L.circleMarker([18.922, 72.8347], {
+            radius: 7.86625,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Mumbai</b> (Maharashtra)<br>Total Crimes: 157,325<br>Violent: 24,095<br>Risk: HIGH");
+        
+        L.circleMarker([10.6405, 76.0611], {
+            radius: 7.856,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Ernakulam Rural</b> (Kerala)<br>Total Crimes: 157,120<br>Violent: 12,547<br>Risk: HIGH");
+        
+        L.circleMarker([26.8467, 80.9462], {
+            radius: 7.35335,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Lucknow</b> (Uttar Pradesh)<br>Total Crimes: 147,067<br>Violent: 14,517<br>Risk: HIGH");
+        
+        L.circleMarker([23.1815, 79.9864], {
+            radius: 7.1577,
+            fillColor: '#e74c3c',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Jabalpur</b> (Madhya Pradesh)<br>Total Crimes: 143,154<br>Violent: 45,900<br>Risk: CRITICAL");
+        
+        L.circleMarker([28.5333, 77.2], {
+            radius: 6.82395,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>24 Parganas South</b> (West Bengal)<br>Total Crimes: 136,479<br>Violent: 12,665<br>Risk: HIGH");
+        
+        L.circleMarker([28.7, 77.1833], {
+            radius: 6.8102,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>24 Parganas North</b> (West Bengal)<br>Total Crimes: 136,204<br>Violent: 17,152<br>Risk: HIGH");
+        
+        L.circleMarker([10.7805, 76.2011], {
+            radius: 6.76865,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Ernakulam Commr.</b> (Kerala)<br>Total Crimes: 135,373<br>Violent: 6,698<br>Risk: HIGH");
+        
+        L.circleMarker([26.2183, 78.1828], {
+            radius: 6.74285,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Gwalior</b> (Madhya Pradesh)<br>Total Crimes: 134,857<br>Violent: 22,173<br>Risk: HIGH");
+        
+        L.circleMarker([19.2183, 72.9781], {
+            radius: 6.7185,
+            fillColor: '#e74c3c',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Thane Commr.</b> (Maharashtra)<br>Total Crimes: 134,370<br>Violent: 31,762<br>Risk: CRITICAL");
+        
+        L.circleMarker([10.7305, 76.1511], {
+            radius: 6.7068,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Malappuram</b> (Kerala)<br>Total Crimes: 134,136<br>Violent: 13,536<br>Risk: HIGH");
+        
+        L.circleMarker([28.5333, 77.2], {
+            radius: 6.5212,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>South</b> (Delhi)<br>Total Crimes: 130,424<br>Violent: 12,927<br>Risk: HIGH");
+        
+        L.circleMarker([26.9488, 74.1429], {
+            radius: 6.43985,
+            fillColor: '#e74c3c',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Alwar</b> (Rajasthan)<br>Total Crimes: 128,797<br>Violent: 38,699<br>Risk: CRITICAL");
+        
+        L.circleMarker([11.0855, 76.5061], {
+            radius: 6.3931,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Kottayam</b> (Kerala)<br>Total Crimes: 127,862<br>Violent: 24,514<br>Risk: HIGH");
+        
+        L.circleMarker([21.1458, 79.0882], {
+            radius: 6.2136,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Nagpur Commr.</b> (Maharashtra)<br>Total Crimes: 124,272<br>Violent: 21,430<br>Risk: HIGH");
+        
+        L.circleMarker([10.8705, 76.2911], {
+            radius: 6,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Alapuzha</b> (Kerala)<br>Total Crimes: 116,019<br>Violent: 19,324<br>Risk: HIGH");
+        
+        L.circleMarker([21.2737, 81.8611], {
+            radius: 6,
+            fillColor: '#e74c3c',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Raipur</b> (Chhattisgarh)<br>Total Crimes: 115,723<br>Violent: 27,941<br>Risk: CRITICAL");
+        
+        L.circleMarker([23.1765, 75.7885], {
+            radius: 6,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Ujjain</b> (Madhya Pradesh)<br>Total Crimes: 114,952<br>Violent: 16,224<br>Risk: HIGH");
+        
+        L.circleMarker([28.65, 77.1], {
+            radius: 6,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>West</b> (Delhi)<br>Total Crimes: 114,819<br>Violent: 15,147<br>Risk: HIGH");
+        
+        L.circleMarker([23.1218, 87.99], {
+            radius: 6,
+            fillColor: '#e74c3c',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Murshidabad</b> (West Bengal)<br>Total Crimes: 112,761<br>Violent: 47,380<br>Risk: CRITICAL");
+        
+        L.circleMarker([27.0638, 74.2579], {
+            radius: 6,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Bharatpur</b> (Rajasthan)<br>Total Crimes: 111,468<br>Violent: 15,598<br>Risk: HIGH");
+        
+        L.circleMarker([16.3067, 80.4365], {
+            radius: 6,
+            fillColor: '#e74c3c',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Guntur</b> (Andhra Pradesh)<br>Total Crimes: 111,014<br>Violent: 30,885<br>Risk: CRITICAL");
+        
+        L.circleMarker([21.1702, 72.8311], {
+            radius: 6,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Surat Commr.</b> (Gujarat)<br>Total Crimes: 111,001<br>Violent: 12,873<br>Risk: HIGH");
+        
+        L.circleMarker([23.2134, 78.8969], {
+            radius: 6,
+            fillColor: '#e74c3c',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Sagar</b> (Madhya Pradesh)<br>Total Crimes: 110,707<br>Violent: 39,031<br>Risk: CRITICAL");
+        
+        L.circleMarker([28.6333, 77.2833], {
+            radius: 6,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>East</b> (Delhi)<br>Total Crimes: 110,257<br>Violent: 14,887<br>Risk: HIGH");
+        
+        L.circleMarker([10.9805, 76.4011], {
+            radius: 6,
+            fillColor: '#e74c3c',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Trivandrum Rural</b> (Kerala)<br>Total Crimes: 109,962<br>Violent: 24,841<br>Risk: CRITICAL");
+        
+        L.circleMarker([11.2471, 78.7769], {
+            radius: 6,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Vellore</b> (Tamil Nadu)<br>Total Crimes: 108,817<br>Violent: 19,598<br>Risk: HIGH");
+        
+        L.circleMarker([16.9891, 82.2475], {
+            radius: 6,
+            fillColor: '#e74c3c',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>East Godavari</b> (Andhra Pradesh)<br>Total Crimes: 107,602<br>Violent: 38,634<br>Risk: CRITICAL");
+        
+        L.circleMarker([10.8855, 76.3061], {
+            radius: 6,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Palakkad</b> (Kerala)<br>Total Crimes: 107,351<br>Violent: 18,672<br>Risk: HIGH");
+        
+        L.circleMarker([16.7107, 81.0952], {
+            radius: 6,
+            fillColor: '#e74c3c',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>West Godavari</b> (Andhra Pradesh)<br>Total Crimes: 107,069<br>Violent: 31,912<br>Risk: CRITICAL");
+        
+        L.circleMarker([10.9221, 78.4519], {
+            radius: 6,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Cuddalore</b> (Tamil Nadu)<br>Total Crimes: 105,767<br>Violent: 16,269<br>Risk: HIGH");
+        
+        L.circleMarker([15.7029, 79.53], {
+            radius: 6,
+            fillColor: '#e74c3c',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Karimnagar</b> (Andhra Pradesh)<br>Total Crimes: 105,564<br>Violent: 40,889<br>Risk: CRITICAL");
+        
+        L.circleMarker([11.0168, 76.9558], {
+            radius: 6,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Coimbatore Rural</b> (Tamil Nadu)<br>Total Crimes: 104,076<br>Violent: 17,856<br>Risk: HIGH");
+        
+        L.circleMarker([26.3806, 93.1176], {
+            radius: 6,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Guwahati City</b> (Assam)<br>Total Crimes: 103,506<br>Violent: 18,926<br>Risk: HIGH");
+        
+        L.circleMarker([22.7418, 87.61], {
+            radius: 6,
+            fillColor: '#e74c3c',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Nadia</b> (West Bengal)<br>Total Crimes: 103,238<br>Violent: 33,354<br>Risk: CRITICAL");
+        
+        L.circleMarker([24.5854, 73.7125], {
+            radius: 6,
+            fillColor: '#e74c3c',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Udaipur</b> (Rajasthan)<br>Total Crimes: 101,970<br>Violent: 27,832<br>Risk: CRITICAL");
+        
+        L.circleMarker([10.5276, 76.2144], {
+            radius: 6,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Thrissur</b> (Kerala)<br>Total Crimes: 101,593<br>Violent: 15,045<br>Risk: HIGH");
+        
+        L.circleMarker([11.2421, 78.7719], {
+            radius: 6,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Villupuram</b> (Tamil Nadu)<br>Total Crimes: 101,405<br>Violent: 15,539<br>Risk: HIGH");
+        
+        L.circleMarker([21.1937, 81.7811], {
+            radius: 6,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Durg</b> (Chhattisgarh)<br>Total Crimes: 100,736<br>Violent: 9,887<br>Risk: HIGH");
+        
+        L.circleMarker([26.9124, 75.7873], {
+            radius: 6,
+            fillColor: '#f39c12',
+            color: '#ffffff',
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup("<b>Jaipur</b> (Rajasthan)<br>Total Crimes: 99,527<br>Violent: 11,706<br>Risk: HIGH");
+        
+        </script>
+    </body>
+    </html>
+    
