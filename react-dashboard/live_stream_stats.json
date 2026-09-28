@@ -1,116 +1,328 @@
 {
-  "last_updated": "2026-09-26T11:05:58Z",
-  "stream_started_at": "2026-09-26T11:05:58Z",
-  "total_events_consumed": 5000,
+  "is_live_stream_active": true,
+  "last_updated": "2026-09-28T10:46:18Z",
+  "current_time_str": "10:46:18",
+  "stream_started_at": "2026-09-28T05:15:40Z",
+  "total_events_consumed": 5185,
+  "events_per_second": 5.8,
+  "active_broker_partitions": 8,
+  "stream_latency_ms": 19,
   "top_live_districts": [
     {
-      "state": "Andhra Pradesh",
-      "district": "Anantapur",
-      "live_incident_count": 35
+      "state": "Karnataka",
+      "district": "Mandya",
+      "live_incident_count": 8
     },
     {
-      "state": "Andhra Pradesh",
-      "district": "Chittoor",
-      "live_incident_count": 35
+      "state": "Rajasthan",
+      "district": "Jaipur Rural",
+      "live_incident_count": 7
     },
     {
-      "state": "Andhra Pradesh",
-      "district": "East Godavari",
-      "live_incident_count": 35
+      "state": "Bihar",
+      "district": "Gopalganj",
+      "live_incident_count": 7
     },
     {
-      "state": "Andhra Pradesh",
-      "district": "Guntur",
-      "live_incident_count": 35
+      "state": "Uttar Pradesh",
+      "district": "Jhansi",
+      "live_incident_count": 7
     },
     {
-      "state": "Andhra Pradesh",
-      "district": "Guntur Urban",
-      "live_incident_count": 35
+      "state": "Tamil Nadu",
+      "district": "Ariyalur",
+      "live_incident_count": 5
     },
     {
-      "state": "Andhra Pradesh",
-      "district": "Krishna",
-      "live_incident_count": 35
+      "state": "Punjab",
+      "district": "SAS Nagar",
+      "live_incident_count": 5
     },
     {
-      "state": "Andhra Pradesh",
-      "district": "Kurnool",
-      "live_incident_count": 35
+      "state": "Uttar Pradesh",
+      "district": "Gautambudh Nagar",
+      "live_incident_count": 5
     },
     {
-      "state": "Andhra Pradesh",
-      "district": "Nellore",
-      "live_incident_count": 35
+      "state": "Bihar",
+      "district": "Khagaria",
+      "live_incident_count": 5
+    },
+    {
+      "state": "Chhattisgarh",
+      "district": "Mungali",
+      "live_incident_count": 5
+    },
+    {
+      "state": "Madhya Pradesh",
+      "district": "Tikamgarh",
+      "live_incident_count": 5
+    },
+    {
+      "state": "Chhattisgarh",
+      "district": "Korba",
+      "live_incident_count": 5
+    },
+    {
+      "state": "Uttar Pradesh",
+      "district": "Kaushambi",
+      "live_incident_count": 5
     },
     {
       "state": "Andhra Pradesh",
       "district": "Prakasham",
-      "live_incident_count": 35
+      "live_incident_count": 5
     },
     {
-      "state": "Andhra Pradesh",
-      "district": "Rajahmundry",
-      "live_incident_count": 35
+      "state": "Madhya Pradesh",
+      "district": "Agar",
+      "live_incident_count": 5
     },
     {
-      "state": "Andhra Pradesh",
-      "district": "Srikakulam",
-      "live_incident_count": 35
-    },
-    {
-      "state": "Andhra Pradesh",
-      "district": "Tirupathi Urban",
-      "live_incident_count": 35
-    },
-    {
-      "state": "Andhra Pradesh",
-      "district": "Visakha Rural",
-      "live_incident_count": 35
-    },
-    {
-      "state": "Andhra Pradesh",
-      "district": "West Godavari",
-      "live_incident_count": 35
-    },
-    {
-      "state": "Assam",
-      "district": "Barpeta",
-      "live_incident_count": 35
-    },
-    {
-      "state": "Assam",
-      "district": "Bongaigaon",
-      "live_incident_count": 35
-    },
-    {
-      "state": "Assam",
-      "district": "Cachar",
-      "live_incident_count": 35
-    },
-    {
-      "state": "Assam",
-      "district": "Chirang",
-      "live_incident_count": 35
-    },
-    {
-      "state": "Assam",
-      "district": "Darrang",
-      "live_incident_count": 35
-    },
-    {
-      "state": "Assam",
-      "district": "Dhubri",
-      "live_incident_count": 35
+      "state": "Rajasthan",
+      "district": "Kota Rural",
+      "live_incident_count": 4
     }
   ],
   "crime_type_breakdown": {
-    "MURDER": 3634,
-    "ROBBERY": 3267,
-    "BURGLARY": 3571,
-    "THEFT": 3784,
-    "RIOTS": 3111,
-    "CHEATING": 3571,
-    "ARSON": 2796
-  }
+    "THEFT": 81,
+    "MURDER": 72,
+    "WOMEN_SAFETY": 66,
+    "ROBBERY": 30,
+    "BURGLARY": 54,
+    "CHEATING": 78,
+    "RIOTS": 45
+  },
+  "recent_events": [
+    {
+      "event_id": "KAFKA-EV-100185",
+      "topic": "live_crimes",
+      "partition": 0,
+      "offset": 140185,
+      "timestamp": "2026-09-28T10:46:18Z",
+      "time_display": "10:46:18",
+      "state": "Chhattisgarh",
+      "district": "Mungali",
+      "crime_type": "RIOTS",
+      "incident_count": 4,
+      "severity_weight": 0.82
+    },
+    {
+      "event_id": "KAFKA-EV-100184",
+      "topic": "live_crimes",
+      "partition": 5,
+      "offset": 140184,
+      "timestamp": "2026-09-28T10:46:18Z",
+      "time_display": "10:46:18",
+      "state": "Odisha",
+      "district": "Cuttack",
+      "crime_type": "CHEATING",
+      "incident_count": 2,
+      "severity_weight": 0.9
+    },
+    {
+      "event_id": "KAFKA-EV-100183",
+      "topic": "live_crimes",
+      "partition": 4,
+      "offset": 140183,
+      "timestamp": "2026-09-28T10:46:18Z",
+      "time_display": "10:46:18",
+      "state": "Uttarakhand",
+      "district": "Almora",
+      "crime_type": "CHEATING",
+      "incident_count": 1,
+      "severity_weight": 0.94
+    },
+    {
+      "event_id": "KAFKA-EV-100182",
+      "topic": "live_crimes",
+      "partition": 5,
+      "offset": 140182,
+      "timestamp": "2026-09-28T10:46:18Z",
+      "time_display": "10:46:18",
+      "state": "Uttar Pradesh",
+      "district": "Kaushambi",
+      "crime_type": "THEFT",
+      "incident_count": 2,
+      "severity_weight": 0.82
+    },
+    {
+      "event_id": "KAFKA-EV-100181",
+      "topic": "live_crimes",
+      "partition": 7,
+      "offset": 140181,
+      "timestamp": "2026-09-28T10:46:18Z",
+      "time_display": "10:46:18",
+      "state": "Tamil Nadu",
+      "district": "Ariyalur",
+      "crime_type": "THEFT",
+      "incident_count": 1,
+      "severity_weight": 0.83
+    },
+    {
+      "event_id": "KAFKA-EV-100180",
+      "topic": "live_crimes",
+      "partition": 4,
+      "offset": 140180,
+      "timestamp": "2026-09-28T10:46:18Z",
+      "time_display": "10:46:18",
+      "state": "Jharkhand",
+      "district": "Palamu",
+      "crime_type": "THEFT",
+      "incident_count": 4,
+      "severity_weight": 0.74
+    },
+    {
+      "event_id": "KAFKA-EV-100179",
+      "topic": "live_crimes",
+      "partition": 6,
+      "offset": 140179,
+      "timestamp": "2026-09-28T10:46:18Z",
+      "time_display": "10:46:18",
+      "state": "Odisha",
+      "district": "Kalahandi",
+      "crime_type": "ROBBERY",
+      "incident_count": 3,
+      "severity_weight": 0.46
+    },
+    {
+      "event_id": "KAFKA-EV-100178",
+      "topic": "live_crimes",
+      "partition": 5,
+      "offset": 140178,
+      "timestamp": "2026-09-28T10:46:17Z",
+      "time_display": "10:46:17",
+      "state": "Punjab",
+      "district": "CP Amritsar",
+      "crime_type": "MURDER",
+      "incident_count": 4,
+      "severity_weight": 0.67
+    },
+    {
+      "event_id": "KAFKA-EV-100177",
+      "topic": "live_crimes",
+      "partition": 0,
+      "offset": 140177,
+      "timestamp": "2026-09-28T10:46:17Z",
+      "time_display": "10:46:17",
+      "state": "Delhi UT",
+      "district": "Spl Cell",
+      "crime_type": "THEFT",
+      "incident_count": 1,
+      "severity_weight": 0.48
+    },
+    {
+      "event_id": "KAFKA-EV-100176",
+      "topic": "live_crimes",
+      "partition": 5,
+      "offset": 140176,
+      "timestamp": "2026-09-28T10:46:17Z",
+      "time_display": "10:46:17",
+      "state": "Punjab",
+      "district": "Ludhiana Rural",
+      "crime_type": "CHEATING",
+      "incident_count": 1,
+      "severity_weight": 0.53
+    },
+    {
+      "event_id": "KAFKA-EV-100175",
+      "topic": "live_crimes",
+      "partition": 6,
+      "offset": 140175,
+      "timestamp": "2026-09-28T10:46:17Z",
+      "time_display": "10:46:17",
+      "state": "Puducherry",
+      "district": "Puducherry",
+      "crime_type": "BURGLARY",
+      "incident_count": 3,
+      "severity_weight": 0.88
+    },
+    {
+      "event_id": "KAFKA-EV-100174",
+      "topic": "live_crimes",
+      "partition": 1,
+      "offset": 140174,
+      "timestamp": "2026-09-28T10:46:17Z",
+      "time_display": "10:46:17",
+      "state": "Gujarat",
+      "district": "Bhavnagar",
+      "crime_type": "BURGLARY",
+      "incident_count": 2,
+      "severity_weight": 0.78
+    }
+  ],
+  "active_anomalies": [
+    {
+      "id": "ANOM-29830",
+      "timestamp": "10:46:18",
+      "district": "Mungali",
+      "state": "Chhattisgarh",
+      "primary_type": "RIOTS",
+      "current_rate": 40,
+      "baseline_mean": 13.0,
+      "z_score": 3.95,
+      "severity": "CRITICAL",
+      "message": "Statistical Surge (CRITICAL): 40 incidents/hr in Mungali vs 13.0 baseline (Z=3.95)"
+    },
+    {
+      "id": "ANOM-84335",
+      "timestamp": "10:46:11",
+      "district": "Almora",
+      "state": "Uttarakhand",
+      "primary_type": "RIOTS",
+      "current_rate": 26,
+      "baseline_mean": 11.0,
+      "z_score": 3.17,
+      "severity": "CRITICAL",
+      "message": "Statistical Surge (CRITICAL): 26 incidents/hr in Almora vs 11.0 baseline (Z=3.17)"
+    },
+    {
+      "id": "ANOM-25145",
+      "timestamp": "10:46:10",
+      "district": "Rewari",
+      "state": "Haryana",
+      "primary_type": "ROBBERY",
+      "current_rate": 35,
+      "baseline_mean": 10.0,
+      "z_score": 4.02,
+      "severity": "CRITICAL",
+      "message": "Statistical Surge (CRITICAL): 35 incidents/hr in Rewari vs 10.0 baseline (Z=4.02)"
+    },
+    {
+      "id": "ANOM-76429",
+      "timestamp": "10:46:09",
+      "district": "Mandya",
+      "state": "Karnataka",
+      "primary_type": "WOMEN_SAFETY",
+      "current_rate": 43,
+      "baseline_mean": 16.0,
+      "z_score": 2.88,
+      "severity": "WARNING",
+      "message": "Statistical Surge (WARNING): 43 incidents/hr in Mandya vs 16.0 baseline (Z=2.88)"
+    },
+    {
+      "id": "ANOM-57202",
+      "timestamp": "10:46:08",
+      "district": "Dindigul",
+      "state": "Tamil Nadu",
+      "primary_type": "MURDER",
+      "current_rate": 34,
+      "baseline_mean": 9.0,
+      "z_score": 2.81,
+      "severity": "WARNING",
+      "message": "Statistical Surge (WARNING): 34 incidents/hr in Dindigul vs 9.0 baseline (Z=2.81)"
+    },
+    {
+      "id": "ANOM-74458",
+      "timestamp": "10:46:04",
+      "district": "Neemuch",
+      "state": "Madhya Pradesh",
+      "primary_type": "RIOTS",
+      "current_rate": 26,
+      "baseline_mean": 9.0,
+      "z_score": 3.49,
+      "severity": "CRITICAL",
+      "message": "Statistical Surge (CRITICAL): 26 incidents/hr in Neemuch vs 9.0 baseline (Z=3.49)"
+    }
+  ]
 }

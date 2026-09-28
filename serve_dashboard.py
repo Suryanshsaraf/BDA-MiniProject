@@ -16,6 +16,9 @@ REACT_DIR = Path(__file__).resolve().parent / "react-dashboard"
 
 class CrimeGISRequestHandler(http.server.SimpleHTTPRequestHandler):
     """Custom HTTP handler with CORS, cache control, and correct MIME types."""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, directory=str(REACT_DIR), **kwargs)
+
     extensions_map = {
         **http.server.SimpleHTTPRequestHandler.extensions_map,
         '.jsx': 'text/javascript',
@@ -37,9 +40,14 @@ def run_server():
         sys.stderr.reconfigure(encoding="utf-8", errors="replace")
     
     target_dir = REACT_DIR if REACT_DIR.exists() else Path(__file__).resolve().parent
-    os.chdir(str(target_dir))
-    socketserver.TCPServer.allow_reuse_address = True
-    
+    # Launch background live stream service
+    try:
+        from ingestion.live_stream_service import start_background_stream
+        start_background_stream()
+        print(" [STREAMING] Live Kafka Stream & Anomaly Engine initialized.")
+    except Exception as e:
+        print(f" [STREAMING] Notice: background stream fallback ({e})")
+
     print("=" * 75)
     print(" [INDIA CRIME] GIS INTELLIGENCE DASHBOARD (REACT + ARCGIS)")
     print("=" * 75)

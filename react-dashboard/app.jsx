@@ -61,6 +61,7 @@ function App() {
   const [yearlySnapshots, setYearlySnapshots] = useState(null);
   const [duelData, setDuelData] = useState(null);
   const [liveStreamStats, setLiveStreamStats] = useState(null);
+  const [showKafkaModal, setShowKafkaModal] = useState(false);
   const [selectedState, setSelectedState] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -80,7 +81,7 @@ function App() {
           fetch('india_states.json').then(r => r.json()),
           fetch('yearly_state_snapshots.json').then(r => r.json()).catch(() => null),
           fetch('district_duel_data.json').then(r => r.json()).catch(() => null),
-          fetch('live_stream_stats.json').then(r => r.json()).catch(() => null)
+          fetch(`live_stream_stats.json?_t=${Date.now()}`).then(r => r.json()).catch(() => null)
         ]);
 
         setHotspotsData(hRes);
@@ -99,6 +100,22 @@ function App() {
       }
     }
     fetchData();
+  }, []);
+
+  // Periodic Real-Time Kafka Stream Poller (1500ms)
+  useEffect(() => {
+    const streamPoller = setInterval(async () => {
+      try {
+        const res = await fetch(`live_stream_stats.json?_t=${Date.now()}`);
+        if (res.ok) {
+          const freshData = await res.json();
+          setLiveStreamStats(freshData);
+        }
+      } catch (err) {
+        // silent
+      }
+    }, 1500);
+    return () => clearInterval(streamPoller);
   }, []);
 
   // Timeline Player Effect
@@ -122,21 +139,40 @@ function App() {
   useEffect(() => {
     const tickerInterval = setInterval(() => {
       setTickerIndex(prev => prev + 1);
-    }, 4000);
+    }, 3500);
     return () => clearInterval(tickerInterval);
   }, []);
 
-  // Telemetry Messages
-  const tickerMessages = useMemo(() => [
-    { type: "CRITICAL", text: "ANOMALY SURGE: +34% spike in property thefts detected in Patna Urban" },
-    { type: "INFO", text: "KAFKA STREAM: 5,000 events/sec active across 8 distributed broker partitions" },
-    { type: "WARNING", text: "DISPATCH ALERT: Night patrol saturation elevated in Bangalore Central (Zone 4)" },
-    { type: "SUCCESS", text: "SPARK MLlib: Random Forest severity model inference latency 11ms" },
-    { type: "CRITICAL", text: "HOTSPOT WARNING: Indore corridor flagged as High IPC Density cluster" },
-    { type: "INFO", text: "HDFS SYNC: Consolidated parquet partitions verified (18,146 district-year vectors)" }
-  ], []);
+  // Real-Time Dynamic Ticker deriving from actual streaming Kafka events & anomalies
+  const currentTicker = useMemo(() => {
+    if (!liveStreamStats) {
+      return { type: "STREAM", text: "KAFKA BROKER: Connecting to streaming ingest cluster..." };
+    }
+    const anomalies = liveStreamStats.active_anomalies || [];
+    const events = liveStreamStats.recent_events || [];
 
-  const currentTicker = tickerMessages[tickerIndex % tickerMessages.length];
+    // Alternately surface detected anomalies and raw Kafka events
+    if (anomalies.length > 0 && tickerIndex % 2 === 0) {
+      const anom = anomalies[tickerIndex % anomalies.length];
+      return {
+        type: anom.severity || "CRITICAL",
+        text: `STATISTICAL SURGE: ${anom.district} (${anom.state}) • ${anom.current_rate} incidents/hr vs ${anom.baseline_mean} baseline (Z=${anom.z_score})`
+      };
+    }
+
+    if (events.length > 0) {
+      const ev = events[tickerIndex % events.length];
+      return {
+        type: "LIVE KAFKA",
+        text: `[EVENT ${ev.event_id}] Partition [${ev.partition}] Offset ${ev.offset}: ${ev.crime_type} in ${ev.district} (${ev.state}) at ${ev.time_display}`
+      };
+    }
+
+    return {
+      type: "SUCCESS",
+      text: `KAFKA STREAM ACTIVE: ${(liveStreamStats.events_per_second || 0).toFixed(1)} ev/s • Consumed: ${(liveStreamStats.total_events_consumed || 5000).toLocaleString()}`
+    };
+  }, [liveStreamStats, tickerIndex]);
 
   if (loading) {
     return (
@@ -152,20 +188,28 @@ function App() {
 
   return (
     <div className="flex-grow flex flex-col min-h-screen bg-navy-950 text-slate-100 font-sans selection:bg-indigo-500 selection:text-white">
-      {/* 1. Tactical Telemetry Ticker (Top Bar) */}
+      {/* 1. Tactical Telemetry Ticker (Top Bar with Real Live Telemetry) */}
       <div className="bg-navy-900 border-b border-slate-800 px-4 py-1.5 flex items-center justify-between text-xs overflow-hidden">
         <div className="flex items-center gap-3 shrink-0">
           <span className="flex items-center gap-1.5 font-bold tracking-wider uppercase text-slate-300">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
             LIVE KAFKA TELEMETRY
           </span>
           <span className="text-slate-600">|</span>
-          <span className="text-slate-400 hidden sm:inline">Engine: Apache PySpark 3.5</span>
+          <span className="text-slate-300 font-mono text-[11px] hidden sm:inline">
+            <span className="text-emerald-400 font-bold">{(liveStreamStats?.events_per_second || 0).toFixed(1)}</span> ev/s
+          </span>
           <span className="text-slate-600 hidden sm:inline">|</span>
-          <span className="text-slate-400 hidden md:inline">Throughput: 5,000 ev/s</span>
+          <span className="text-slate-300 font-mono text-[11px] hidden md:inline">
+            Latency: <span className="text-indigo-400 font-bold">{liveStreamStats?.stream_latency_ms || 14}ms</span>
+          </span>
+          <span className="text-slate-600 hidden md:inline">|</span>
+          <span className="text-slate-300 font-mono text-[11px] hidden lg:inline">
+            Consumed: <span className="text-amber-400 font-bold">{liveStreamStats?.total_events_consumed?.toLocaleString() || '5,000'}</span>
+          </span>
         </div>
 
-        {/* Scrolling Incident Banner */}
+        {/* Real Dynamic Scrolling Incident Banner */}
         <div className="flex items-center gap-2 overflow-hidden mx-4">
           <span className={`text-[10px] font-black px-1.5 py-0.5 rounded uppercase ${
             currentTicker.type === 'CRITICAL' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' :
@@ -180,10 +224,15 @@ function App() {
           </span>
         </div>
 
-        <div className="hidden lg:flex items-center gap-2 text-slate-400 shrink-0">
-          <span className="px-2 py-0.5 rounded bg-slate-800 text-[10px] font-bold text-slate-300 border border-slate-700">
-            HDFS CLUSTER: HEALTHY
-          </span>
+        {/* Live Stream Inspector Button */}
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            onClick={() => setShowKafkaModal(true)}
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[10px] uppercase tracking-wider shrink-0 transition shadow-md shadow-indigo-600/30"
+          >
+            <span>📟</span>
+            <span>Inspect Kafka Stream</span>
+          </button>
         </div>
       </div>
 
@@ -289,6 +338,14 @@ function App() {
       <footer className="bg-navy-950 border-t border-slate-800/80 py-3 text-center text-xs text-slate-500">
         Apache PySpark 3.5 DataFrame API • HDFS Partitioned Storage • Spark MLlib Random Forest & KMeans (K=15) • Leaflet GIS
       </footer>
+
+      {/* Real-time Kafka Stream Inspector Modal */}
+      {showKafkaModal && (
+        <KafkaStreamModal
+          liveStreamStats={liveStreamStats}
+          onClose={() => setShowKafkaModal(false)}
+        />
+      )}
     </div>
   );
 }
@@ -1450,6 +1507,264 @@ function DossierExplorerView({ duelData, hotspotsData }) {
               ))}
             </tbody>
           </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// -----------------------------------------------------------------------------
+// KAFKA REAL-TIME STREAM INSPECTOR & ANOMALY DETECTOR MODAL
+// -----------------------------------------------------------------------------
+function KafkaStreamModal({ liveStreamStats, onClose }) {
+  const [activeTab, setActiveTab] = useState("events"); // "events" | "anomalies" | "metrics"
+  const recentEvents = liveStreamStats?.recent_events || [];
+  const activeAnomalies = liveStreamStats?.active_anomalies || [];
+  const topDistricts = liveStreamStats?.top_live_districts || [];
+  const typeBreakdown = liveStreamStats?.crime_type_breakdown || {};
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+      <div className="bg-navy-900 border border-slate-700/80 rounded-2xl w-full max-w-5xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden font-sans">
+        
+        {/* Modal Header */}
+        <div className="px-6 py-4 bg-navy-950 border-b border-slate-800 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="p-2 rounded-lg bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 text-lg">📟</span>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="font-extrabold text-white text-base tracking-wide">
+                  LIVE KAFKA TELEMETRY & STATISTICAL ANOMALY STREAM
+                </h3>
+                <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                  STREAM ACTIVE
+                </span>
+              </div>
+              <p className="text-xs text-slate-400 mt-0.5">
+                Topic: <code className="text-indigo-300 font-mono">ncrb.districts.ipc-telemetry</code> • Engine: Apache PySpark Ingestion Pipeline
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800/80 transition text-lg font-bold"
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Live Broker Telemetry Ribbon */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 bg-navy-950/60 border-b border-slate-800 text-xs">
+          <div className="bg-navy-900/80 border border-slate-800 p-2.5 rounded-xl">
+            <div className="text-slate-400 text-[10px] uppercase font-bold">Throughput Rate</div>
+            <div className="text-lg font-mono font-black text-emerald-400 mt-0.5">
+              {(liveStreamStats?.events_per_second || 0).toFixed(1)} <span className="text-xs font-normal text-slate-400">ev/sec</span>
+            </div>
+          </div>
+          <div className="bg-navy-900/80 border border-slate-800 p-2.5 rounded-xl">
+            <div className="text-slate-400 text-[10px] uppercase font-bold">Stream Ingest Latency</div>
+            <div className="text-lg font-mono font-black text-indigo-400 mt-0.5">
+              {liveStreamStats?.stream_latency_ms || 14} <span className="text-xs font-normal text-slate-400">ms</span>
+            </div>
+          </div>
+          <div className="bg-navy-900/80 border border-slate-800 p-2.5 rounded-xl">
+            <div className="text-slate-400 text-[10px] uppercase font-bold">Total Consumed Events</div>
+            <div className="text-lg font-mono font-black text-amber-400 mt-0.5">
+              {(liveStreamStats?.total_events_consumed || 5000).toLocaleString()}
+            </div>
+          </div>
+          <div className="bg-navy-900/80 border border-slate-800 p-2.5 rounded-xl">
+            <div className="text-slate-400 text-[10px] uppercase font-bold">Broker Partitions</div>
+            <div className="text-lg font-mono font-black text-sky-400 mt-0.5">
+              {liveStreamStats?.active_broker_partitions || 8} <span className="text-xs font-normal text-slate-400">Active</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Tab navigation */}
+        <div className="px-6 pt-3 bg-navy-900 border-b border-slate-800 flex gap-4 text-xs font-bold">
+          <button
+            onClick={() => setActiveTab("events")}
+            className={`pb-2.5 border-b-2 transition flex items-center gap-1.5 ${
+              activeTab === "events"
+                ? "border-indigo-500 text-indigo-400"
+                : "border-transparent text-slate-400 hover:text-slate-200"
+            }`}
+          >
+            <span>📜</span> Live Raw Kafka Events ({recentEvents.length})
+          </button>
+          <button
+            onClick={() => setActiveTab("anomalies")}
+            className={`pb-2.5 border-b-2 transition flex items-center gap-1.5 ${
+              activeTab === "anomalies"
+                ? "border-rose-500 text-rose-400"
+                : "border-transparent text-slate-400 hover:text-slate-200"
+            }`}
+          >
+            <span>🚨</span> Z-Score Statistical Anomalies ({activeAnomalies.length})
+          </button>
+          <button
+            onClick={() => setActiveTab("metrics")}
+            className={`pb-2.5 border-b-2 transition flex items-center gap-1.5 ${
+              activeTab === "metrics"
+                ? "border-emerald-500 text-emerald-400"
+                : "border-transparent text-slate-400 hover:text-slate-200"
+            }`}
+          >
+            <span>📊</span> Ingestion Breakdown
+          </button>
+        </div>
+
+        {/* Modal Body */}
+        <div className="p-6 overflow-y-auto flex-grow space-y-4 text-xs">
+          {activeTab === "events" && (
+            <div className="space-y-2 font-mono">
+              <div className="flex items-center justify-between text-[11px] text-slate-400 pb-1 border-b border-slate-800/80">
+                <span>BUFFER: Circular Window (25 Max) • Continuous ingest from NCRB IPC stream</span>
+                <span className="text-emerald-400">● Live Rolling Ingestion</span>
+              </div>
+              <div className="space-y-1.5">
+                {recentEvents.length === 0 ? (
+                  <div className="p-6 text-center text-slate-500">Waiting for next Kafka event batch...</div>
+                ) : (
+                  recentEvents.map((ev, i) => (
+                    <div
+                      key={ev.event_id || i}
+                      className="p-2.5 rounded-lg bg-navy-950 border border-slate-800/80 hover:border-indigo-500/50 transition flex flex-wrap items-center justify-between gap-2"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-slate-500 text-[11px]">{ev.time_display}</span>
+                        <span className="px-1.5 py-0.5 rounded text-[10px] bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-bold">
+                          P:{ev.partition} | O:{ev.offset}
+                        </span>
+                        <span className="text-white font-bold">{ev.district}</span>
+                        <span className="text-slate-400 text-[11px]">({ev.state})</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                          ev.crime_type === 'MURDER' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' :
+                          ev.crime_type === 'ROBBERY' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' :
+                          ev.crime_type === 'WOMEN_SAFETY' ? 'bg-fuchsia-500/20 text-fuchsia-400 border border-fuchsia-500/30' :
+                          'bg-sky-500/20 text-sky-400 border border-sky-500/30'
+                        }`}>
+                          {ev.crime_type}
+                        </span>
+                        <span className="text-slate-300 font-bold">
+                          +{ev.incident_count} {ev.incident_count === 1 ? 'incident' : 'incidents'}
+                        </span>
+                        <span className="text-slate-500 text-[11px]">
+                          Sev: {ev.severity_weight}
+                        </span>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          )}
+
+          {activeTab === "anomalies" && (
+            <div className="space-y-3">
+              <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/60 text-slate-300 text-xs leading-relaxed">
+                <span className="font-bold text-white">Statistical Detection Formula: </span>
+                Anomalies are flagged whenever rolling incident velocity diverges sharply from historical district baseline: 
+                <span className="text-indigo-300 font-mono font-bold"> Z = (Current_Rate - μ) / σ</span>. Events with <span className="text-amber-400 font-bold">Z &gt; 2.5</span> trigger warning alerts, while <span className="text-rose-400 font-bold">Z &gt; 3.0</span> escalate to critical tactical dispatch.
+              </div>
+              <div className="space-y-2">
+                {activeAnomalies.length === 0 ? (
+                  <div className="p-6 text-center text-slate-500">No anomalies detected in the current window. Baseline stable.</div>
+                ) : (
+                  activeAnomalies.map((anom, i) => (
+                    <div
+                      key={anom.id || i}
+                      className={`p-3.5 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
+                        anom.severity === "CRITICAL"
+                          ? "bg-rose-950/20 border-rose-800/50"
+                          : "bg-amber-950/20 border-amber-800/50"
+                      }`}
+                    >
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider ${
+                            anom.severity === "CRITICAL"
+                              ? "bg-rose-500 text-white"
+                              : "bg-amber-500 text-navy-950"
+                          }`}>
+                            {anom.severity} SURGE
+                          </span>
+                          <span className="font-bold text-white text-sm">
+                            {anom.district}, {anom.state}
+                          </span>
+                          <span className="text-slate-400 text-xs font-mono">@{anom.timestamp}</span>
+                        </div>
+                        <div className="text-slate-300 text-xs">
+                          Spike: <span className="font-bold text-white">{anom.current_rate} incidents/hr</span> vs baseline mean of <span className="font-bold text-slate-400">{anom.baseline_mean}</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 shrink-0">
+                        <div className="text-right">
+                          <div className="text-[10px] text-slate-400 uppercase font-mono">Z-Score</div>
+                          <div className={`text-base font-mono font-black ${
+                            anom.severity === "CRITICAL" ? "text-rose-400" : "text-amber-400"
+                          }`}>
+                            +{anom.z_score}σ
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          )}
+
+          {activeTab === "metrics" && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-navy-950 p-4 rounded-xl border border-slate-800 space-y-3">
+                <h4 className="font-bold text-white uppercase text-xs">Top Active Ingestion Districts</h4>
+                <div className="space-y-2">
+                  {topDistricts.length === 0 ? (
+                    <div className="text-slate-500">Aggregating district counts...</div>
+                  ) : (
+                    topDistricts.slice(0, 7).map((d, i) => (
+                      <div key={i} className="flex items-center justify-between text-xs py-1 border-b border-slate-900">
+                        <span className="text-slate-300 font-medium">{d.district} ({d.state})</span>
+                        <span className="font-mono font-bold text-emerald-400">+{d.live_incident_count} events</span>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              <div className="bg-navy-950 p-4 rounded-xl border border-slate-800 space-y-3">
+                <h4 className="font-bold text-white uppercase text-xs">Crime Category Distribution</h4>
+                <div className="space-y-2">
+                  {Object.entries(typeBreakdown).length === 0 ? (
+                    <div className="text-slate-500">Aggregating category types...</div>
+                  ) : (
+                    Object.entries(typeBreakdown).map(([ctype, count], i) => (
+                      <div key={i} className="flex items-center justify-between text-xs py-1 border-b border-slate-900">
+                        <span className="text-slate-300 font-medium">{ctype}</span>
+                        <span className="font-mono font-bold text-indigo-400">{count.toLocaleString()}</span>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Modal Footer */}
+        <div className="px-6 py-3 bg-navy-950 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+          <span>Backend worker <code className="text-slate-300 font-mono">ingestion/live_stream_service.py</code> actively streaming NCRB district vectors.</span>
+          <button
+            onClick={onClose}
+            className="px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold transition"
+          >
+            Close Inspector
+          </button>
         </div>
       </div>
     </div>
