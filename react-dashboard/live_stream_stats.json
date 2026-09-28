@@ -1,0 +1,116 @@
+{
+  "last_updated": "2026-09-26T11:05:58Z",
+  "stream_started_at": "2026-09-26T11:05:58Z",
+  "total_events_consumed": 5000,
+  "top_live_districts": [
+    {
+      "state": "Andhra Pradesh",
+      "district": "Anantapur",
+      "live_incident_count": 35
+    },
+    {
+      "state": "Andhra Pradesh",
+      "district": "Chittoor",
+      "live_incident_count": 35
+    },
+    {
+      "state": "Andhra Pradesh",
+      "district": "East Godavari",
+      "live_incident_count": 35
+    },
+    {
+      "state": "Andhra Pradesh",
+      "district": "Guntur",
+      "live_incident_count": 35
+    },
+    {
+      "state": "Andhra Pradesh",
+      "district": "Guntur Urban",
+      "live_incident_count": 35
+    },
+    {
+      "state": "Andhra Pradesh",
+      "district": "Krishna",
+      "live_incident_count": 35
+    },
+    {
+      "state": "Andhra Pradesh",
+      "district": "Kurnool",
+      "live_incident_count": 35
+    },
+    {
+      "state": "Andhra Pradesh",
+      "district": "Nellore",
+      "live_incident_count": 35
+    },
+    {
+      "state": "Andhra Pradesh",
+      "district": "Prakasham",
+      "live_incident_count": 35
+    },
+    {
+      "state": "Andhra Pradesh",
+      "district": "Rajahmundry",
+      "live_incident_count": 35
+    },
+    {
+      "state": "Andhra Pradesh",
+      "district": "Srikakulam",
+      "live_incident_count": 35
+    },
+    {
+      "state": "Andhra Pradesh",
+      "district": "Tirupathi Urban",
+      "live_incident_count": 35
+    },
+    {
+      "state": "Andhra Pradesh",
+      "district": "Visakha Rural",
+      "live_incident_count": 35
+    },
+    {
+      "state": "Andhra Pradesh",
+      "district": "West Godavari",
+      "live_incident_count": 35
+    },
+    {
+      "state": "Assam",
+      "district": "Barpeta",
+      "live_incident_count": 35
+    },
+    {
+      "state": "Assam",
+      "district": "Bongaigaon",
+      "live_incident_count": 35
+    },
+    {
+      "state": "Assam",
+      "district": "Cachar",
+      "live_incident_count": 35
+    },
+    {
+      "state": "Assam",
+      "district": "Chirang",
+      "live_incident_count": 35
+    },
+    {
+      "state": "Assam",
+      "district": "Darrang",
+      "live_incident_count": 35
+    },
+    {
+      "state": "Assam",
+      "district": "Dhubri",
+      "live_incident_count": 35
+    }
+  ],
+  "crime_type_breakdown": {
+    "MURDER": 3634,
+    "ROBBERY": 3267,
+    "BURGLARY": 3571,
+    "THEFT": 3784,
+    "RIOTS": 3111,
+    "CHEATING": 3571,
+    "ARSON": 2796
+  }
+}
