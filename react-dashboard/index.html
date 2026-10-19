@@ -150,7 +150,12 @@ const BASEMAP_TILES = {
 // MAIN APP COMPONENT
 // -----------------------------------------------------------------------------
 function App() {
-  const [activeTab, setActiveTab] = useState("map");
+  const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+  const initialTab = urlParams?.get('tab') || "map";
+  const initialYear = urlParams?.get('year') ? parseInt(urlParams.get('year')) : 2014;
+  const initialModal = urlParams?.get('modal') === 'kafka';
+
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [selectedRegion, setSelectedRegion] = useState("All India");
   const [selectedMetric, setSelectedMetric] = useState("total_crimes");
   const [activeBasemap, setActiveBasemap] = useState("ArcGIS Dark");
@@ -158,7 +163,7 @@ function App() {
   const [showHotspots, setShowHotspots] = useState(true);
 
   // Temporal Time-Travel Player State (2001 - 2022)
-  const [timelineYear, setTimelineYear] = useState(2022);
+  const [timelineYear, setTimelineYear] = useState(initialYear);
   const [isPlayingTimeline, setIsPlayingTimeline] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
 
@@ -172,7 +177,7 @@ function App() {
   const [yearlySnapshots, setYearlySnapshots] = useState(null);
   const [duelData, setDuelData] = useState(null);
   const [liveStreamStats, setLiveStreamStats] = useState(null);
-  const [showKafkaModal, setShowKafkaModal] = useState(false);
+  const [showKafkaModal, setShowKafkaModal] = useState(initialModal);
   const [selectedState, setSelectedState] = useState(null);
   const [loading, setLoading] = useState(true);
 
