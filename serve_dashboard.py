@@ -59,6 +59,7 @@ def run_server():
     print(f"Serving files from {target_dir}. Press Ctrl+C to stop.\n")
 
     try:
+        socketserver.TCPServer.allow_reuse_address = True
         with socketserver.TCPServer(("", PORT), CrimeGISRequestHandler) as httpd:
             httpd.serve_forever()
     except KeyboardInterrupt:
